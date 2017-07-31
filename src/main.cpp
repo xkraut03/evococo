@@ -1,6 +1,7 @@
-#include <stdio>
+#include <iostream>
 
-int int main(int argc, char const *argv[]) {
-  std::cout << "Hello world!\n";
-  return 0;
+int main(int argc, char const *argv[])
+{
+    std::cout << "Let's evolution something!" << '\n';
+    return 0;
 }
