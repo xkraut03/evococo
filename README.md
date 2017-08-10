@@ -1,5 +1,7 @@
 # EvoCoCo
+
 ## Evolution of a Configurable Component
+###### Project idea descritpion
 
 Not all of computations in our smart devices are done by the main CPU. These devices also contain separate hardware **components** which were designed to do specific tasks faster and more efficient than CPU. Network chips, image encoder, etc.
 
@@ -9,3 +11,9 @@ But what's up with the **configurable** component? Well sometimes we do not need
 
 Neither I am an expert in the EA area nor this is originaly my idea. Credits to
 Prof. Ing. Lukáš Sekanina, Ph.D., who is the guarantee and the lecturer of Bio-Inspired Computers course in Brno University of Technology, Faculty of Information Technology. He teaches the EA (and much more) and came up with and idea for this project (he has already done some work in this field).
+
+### Goals
+
+* Implement a working solution (the school version was semi-finished)
+* Iterate and improve the solution
+* Learn new techniques, technologies
