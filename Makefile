@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -O3 -pedantic -Werror -c
 
 LIBS = lib
-OBJS = main.o EasyBMP.o
+OBJS = main.o EasyBMP.o MedianFilterEvolution.o
 
 all: $(OBJS)
 	$(CXX) $(OBJS) -o $(BUILD)/$(PROJECT)
@@ -15,6 +15,9 @@ main.o: $(SOURCE)/main.cpp
 
 EasyBMP.o: $(LIBS)/EasyBMP/EasyBMP.cpp $(LIBS)/EasyBMP/EasyBMP.h
 	$(CXX) $(CXXFLAGS) $(LIBS)/EasyBMP/EasyBMP.cpp -o EasyBMP.o
+
+MedianFilterEvolution.o: $(SOURCE)/MedianFilterEvolution.cpp
+	$(CXX) $(CXXFLAGS) $(SOURCE)/MedianFilterEvolution.cpp -o MedianFilterEvolution.o
 
 clean:
 	rm *.o
