@@ -1,4 +1,4 @@
-// ComponentEvolver.h
+// ComponentEvolver.hpp
 // author: Daniel Kraut
 // creation date: 16th of August, 2017
 
@@ -11,6 +11,9 @@ private:
 
 public:
     ComponentEvolver();
-    void addImage(const std::string& original_image_path, const std::string& noise_image_path);
     ~ComponentEvolver();
+
+    void addImages(const std::string& original_image_path, const std::string& noise_image_path);
+    void evolve();
+    void filterOriginalImageToFile(const std::string& output_image_path);
 };
