@@ -21,11 +21,13 @@
 
 // evolutionary algorithm parameters
 const int population_size = 20;
-const int number_of_generations = 500;
+const int num_generations = 500;
 // CGP parameters
 const int circuit_rows = 8;
 const int circuit_columns = 10;
 const int circuit_lback = 1;
+const int circuit_inputs = 25;
+const int circtuit_outputs = 1;
 
 #include "../lib/EasyBMP/EasyBMP.h"
 

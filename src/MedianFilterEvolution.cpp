@@ -21,6 +21,8 @@
 
 #include "../lib/EasyBMP/EasyBMP.h"
 
+#include "CGPcircuit.hpp"
+
 MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path)
 {
         original_image_.ReadFromFile(original_image_path.c_str());
@@ -32,6 +34,16 @@ using Unit = int;
 
 void generateFirstPopulation(Population& population)
 {
+    CGPcircuit new_population[population_size];
+    for (auto unit : new_population)
+    {
+        unit.setRowsNumber(circuit_rows);
+        unit.setColumnsNumber(circuit_columns);
+        unit.setLBackValue(circuit_lback);
+        unit.setInputsNumber(circuit_inputs);
+        unit.setOutputsNumber(circtuit_outputs);
+    }
+
     for (size_t i = 0; i < 20; ++i) {
         population[i] = i;
     }
@@ -62,7 +74,7 @@ void MedianFilterEvolution::evolve()
     Unit the_best_unit = selectBestUnit(population);
     std::cout << "The first best solution is: " << the_best_unit << "\n";
 
-    for (int cycle = 0; cycle < number_of_generations; ++cycle)
+    for (int cycle = 0; cycle < num_generations; ++cycle)
     {
         generatePopulationFromParent(the_best_unit, population);
         the_best_unit = selectBestUnit(population);
