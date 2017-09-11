@@ -30,8 +30,8 @@ const int circtuit_outputs = 1;
 
 using CGPComponent = int; // for now
 
-template <size_t S>
-using ComponentsMatrix = std::array<CGPComponent, std::size_t _Nm>;
+template <size_t MatrixRows, size_t MatrixColumns>
+using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
 
 class CGPCircuit {
 private:

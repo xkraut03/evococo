@@ -20,7 +20,10 @@
 #include "CGPCircuit.hpp"
 
 CGPCircuit::CGPCircuit()
-{}
+{
+    ComponentsMatrix<50,20> pole;
+    pole[0][19] = 42;
+}
 
 void CGPCircuit::setRowsNumber(const int num_rows)
 {
