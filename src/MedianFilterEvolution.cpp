@@ -21,7 +21,7 @@
 
 #include "../lib/EasyBMP/EasyBMP.h"
 
-#include "CGPcircuit.hpp"
+#include "CGPCircuit.hpp"
 
 MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path)
 {
