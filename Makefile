@@ -30,4 +30,4 @@ clean:
 	rm $(BUILD_FOLDER)/$(PROJECT_NAME)
 
 run:
-	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp
+	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
