@@ -1,4 +1,4 @@
-// CGPcircuit.cpp
+// CGPCircuit.cpp
 // author: Daniel Kraut
 // creation date: 10th of September, 2017
 //
@@ -17,32 +17,32 @@
 // limitations under the License.
 //
 
-#include "CGPcircuit.hpp"
+#include "CGPCircuit.hpp"
 
-CGPcircuit::CGPcircuit()
+CGPCircuit::CGPCircuit()
 {}
 
-void CGPcircuit::setRowsNumber(const int num_rows)
+void CGPCircuit::setRowsNumber(const int num_rows)
 {
     num_rows_ = num_rows;
 }
 
-void CGPcircuit::setColumnsNumber(const int num_columns)
+void CGPCircuit::setColumnsNumber(const int num_columns)
 {
     num_columns_ = num_columns;
 }
 
-void CGPcircuit::setLBackValue(const int l_back_value)
+void CGPCircuit::setLBackValue(const int l_back_value)
 {
     l_back_ = l_back_value;
 }
 
-void CGPcircuit::setInputsNumber(const int num_inputs)
+void CGPCircuit::setInputsNumber(const int num_inputs)
 {
     num_inputs_ = num_inputs;
 }
 
-void CGPcircuit::setOutputsNumber(const int num_outputs)
+void CGPCircuit::setOutputsNumber(const int num_outputs)
 {
     num_outputs_ = num_outputs;
 }

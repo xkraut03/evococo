@@ -1,4 +1,4 @@
-// CGPcircuit.hpp
+// CGPCircuit.hpp
 // author: Daniel Kraut
 // creation date: 10th of September, 2017
 //
@@ -17,6 +17,10 @@
 // limitations under the License.
 //
 
+#pragma once
+
+#include <array>
+
 // CGP parameters
 const int circuit_rows = 8;
 const int circuit_columns = 10;
@@ -24,9 +28,12 @@ const int circuit_lback = 1;
 const int circuit_inputs = 25;
 const int circtuit_outputs = 1;
 
-#pragma once
+using CGPComponent = int; // for now
 
-class CGPcircuit {
+template <size_t S>
+using ComponentsMatrix = std::array<CGPComponent, std::size_t _Nm>;
+
+class CGPCircuit {
 private:
     int num_rows_;
     int num_columns_;
@@ -35,11 +42,13 @@ private:
     int num_outputs_;
 
 public:
-    CGPcircuit ();
+    CGPCircuit ();
+
+private:
     void setRowsNumber(const int num_rows);
     void setColumnsNumber(const int num_columns);
     void setLBackValue(const int l_back_value);
     void setInputsNumber(const int num_inputs);
     void setOutputsNumber(const int num_outputs);
-    virtual ~CGPcircuit () = default;
+    virtual ~CGPCircuit () = default;
 };
