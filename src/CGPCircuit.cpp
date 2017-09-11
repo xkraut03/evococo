@@ -17,12 +17,13 @@
 // limitations under the License.
 //
 
+#include <iostream>
+
 #include "CGPCircuit.hpp"
 
 CGPCircuit::CGPCircuit()
 {
-    ComponentsMatrix<50,20> pole;
-    pole[0][19] = 42;
+    ComponentsMatrix<circuit_rows,circuit_columns> pole;
 }
 
 void CGPCircuit::setRowsNumber(const int num_rows)

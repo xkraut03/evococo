@@ -25,8 +25,8 @@
 
 MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path)
 {
-        original_image_.ReadFromFile(original_image_path.c_str());
-        noise_image_.ReadFromFile(noise_image_path.c_str());
+    original_image_.ReadFromFile(original_image_path.c_str());
+    noise_image_.ReadFromFile(noise_image_path.c_str());
 }
 
 using Population = int[20];
@@ -34,7 +34,7 @@ using Unit = int;
 
 void generateFirstPopulation(Population& population)
 {
-    // CGPcircuit new_population[population_size];
+    CGPCircuit new_population;
     // for (auto unit : new_population)
     // {
     //     unit.setRowsNumber(circuit_rows);
