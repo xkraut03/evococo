@@ -1,20 +1,23 @@
 SOURCE_FOLDER = src
 BUILD_FOLDER = build
 PROJECT_NAME = evococo
-CXX = g++
-CXXFLAGS = -std=c++17 -O3 -pedantic -Werror -c
-
+CXX = clang++
+CXXFLAGS = -g -std=c++1z -O3 -pedantic -Wall -Werror -c
 LIBS_FOLDER = lib
-OBJS = main.o EasyBMP.o ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
+LD = clang++
+LDFLAGS = -g
+
+OBJS = main.o libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
 
 all: $(OBJS)
-	$(CXX) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
+	$(LD) $(LDFLAGS) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
+
+libEasyBMP.a: $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
+	$(CXX) -g -std=c++1z -O3 -pedantic -c $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp -o EasyBMP.o; \
+	ar rcs libEasyBMP.a EasyBMP.o
 
 main.o: $(SOURCE_FOLDER)/main.cpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/main.cpp -o main.o
-
-EasyBMP.o: $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
-	$(CXX) $(CXXFLAGS) $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp -o EasyBMP.o
 
 ComponentEvolver.o: $(SOURCE_FOLDER)/ComponentEvolver.cpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/ComponentEvolver.cpp -o ComponentEvolver.o

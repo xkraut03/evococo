@@ -6,3 +6,6 @@ build/
 *.lo
 *.o
 *.obj
+
+# compiled libraries
+*.a
