@@ -34,15 +34,15 @@ using Unit = int;
 
 void generateFirstPopulation(Population& population)
 {
-    CGPcircuit new_population[population_size];
-    for (auto unit : new_population)
-    {
-        unit.setRowsNumber(circuit_rows);
-        unit.setColumnsNumber(circuit_columns);
-        unit.setLBackValue(circuit_lback);
-        unit.setInputsNumber(circuit_inputs);
-        unit.setOutputsNumber(circtuit_outputs);
-    }
+    // CGPcircuit new_population[population_size];
+    // for (auto unit : new_population)
+    // {
+    //     unit.setRowsNumber(circuit_rows);
+    //     unit.setColumnsNumber(circuit_columns);
+    //     unit.setLBackValue(circuit_lback);
+    //     unit.setInputsNumber(circuit_inputs);
+    //     unit.setOutputsNumber(circtuit_outputs);
+    // }
 
     for (size_t i = 0; i < 20; ++i) {
         population[i] = i;

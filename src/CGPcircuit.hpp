@@ -17,6 +17,13 @@
 // limitations under the License.
 //
 
+// CGP parameters
+const int circuit_rows = 8;
+const int circuit_columns = 10;
+const int circuit_lback = 1;
+const int circuit_inputs = 25;
+const int circtuit_outputs = 1;
+
 #pragma once
 
 class CGPcircuit {

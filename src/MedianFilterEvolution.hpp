@@ -22,12 +22,7 @@
 // evolutionary algorithm parameters
 const int population_size = 20;
 const int num_generations = 500;
-// CGP parameters
-const int circuit_rows = 8;
-const int circuit_columns = 10;
-const int circuit_lback = 1;
-const int circuit_inputs = 25;
-const int circtuit_outputs = 1;
+
 
 #include "../lib/EasyBMP/EasyBMP.h"
 
@@ -35,7 +30,7 @@ class MedianFilterEvolution
 {
 public:
     MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path);
-    ~MedianFilterEvolution(){};
+    ~MedianFilterEvolution() = default;
     void evolve();
 
 private:
