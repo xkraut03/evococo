@@ -28,3 +28,6 @@ CGPCircuit.o: $(SOURCE_FOLDER)/CGPCircuit.cpp
 clean:
 	rm *.o
 	rm $(BUILD_FOLDER)/$(PROJECT_NAME)
+
+run:
+	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp
