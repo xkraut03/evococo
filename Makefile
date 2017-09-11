@@ -5,7 +5,7 @@ CXX = g++
 CXXFLAGS = -std=c++17 -O3 -pedantic -Werror -c
 
 LIBS_FOLDER = lib
-OBJS = main.o EasyBMP.o ComponentEvolver.o MedianFilterEvolution.o CGPcircuit.o
+OBJS = main.o EasyBMP.o ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
 
 all: $(OBJS)
 	$(CXX) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
@@ -22,8 +22,8 @@ ComponentEvolver.o: $(SOURCE_FOLDER)/ComponentEvolver.cpp
 MedianFilterEvolution.o: $(SOURCE_FOLDER)/MedianFilterEvolution.cpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/MedianFilterEvolution.cpp -o MedianFilterEvolution.o
 
-CGPcircuit.o: $(SOURCE_FOLDER)/CGPcircuit.cpp
-	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/CGPcircuit.cpp -o CGPcircuit.o
+CGPCircuit.o: $(SOURCE_FOLDER)/CGPCircuit.cpp
+	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/CGPCircuit.cpp -o CGPCircuit.o
 
 clean:
 	rm *.o
