@@ -22,7 +22,7 @@
 #include <string>
 #include <memory>
 
-class MedianFilterEvolution;
+#include "MedianFilterEvolution.hpp"
 
 class ComponentEvolver
 {

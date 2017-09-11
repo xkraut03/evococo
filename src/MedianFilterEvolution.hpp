@@ -30,7 +30,7 @@ class MedianFilterEvolution
 {
 public:
     MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path);
-    virtual ~MedianFilterEvolution() = default;
+    ~MedianFilterEvolution(){};
     void evolve();
 
 private:
