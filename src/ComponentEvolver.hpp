@@ -28,7 +28,7 @@ class ComponentEvolver
 {
 public:
     ComponentEvolver();
-    ~ComponentEvolver();
+    virtual ~ComponentEvolver() = default;
 
     void addImages(const std::string& original_image_path, const std::string& noise_image_path);
     void evolve();

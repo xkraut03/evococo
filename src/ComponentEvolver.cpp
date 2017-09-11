@@ -27,9 +27,6 @@
 ComponentEvolver::ComponentEvolver()
 {}
 
-ComponentEvolver::~ComponentEvolver()
-{}
-
 void ComponentEvolver::addImages(const std::string& original_image_path, const std::string& noise_image_path)
 {
     original_image_path_ = original_image_path;

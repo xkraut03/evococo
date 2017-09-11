@@ -43,6 +43,7 @@ private:
 
 public:
     CGPCircuit ();
+    virtual ~CGPCircuit () = default;
 
 private:
     void setRowsNumber(const int num_rows);
@@ -50,5 +51,4 @@ private:
     void setLBackValue(const int l_back_value);
     void setInputsNumber(const int num_inputs);
     void setOutputsNumber(const int num_outputs);
-    virtual ~CGPCircuit () = default;
 };
