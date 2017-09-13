@@ -7,14 +7,14 @@ LIBS_FOLDER = lib
 LD = clang++
 LDFLAGS = -g
 
-OBJS = main.o libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
+OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
 
 all: $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
 
-libEasyBMP.a: $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
+$(LIBS_FOLDER)/libEasyBMP.a: $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
 	$(CXX) -g -std=c++1z -O3 -pedantic -c $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp -o EasyBMP.o; \
-	ar rcs libEasyBMP.a EasyBMP.o
+	ar rcs $(LIBS_FOLDER)/libEasyBMP.a EasyBMP.o
 
 main.o: $(SOURCE_FOLDER)/main.cpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/main.cpp -o main.o
