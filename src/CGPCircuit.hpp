@@ -20,15 +20,23 @@
 #pragma once
 
 #include <array>
+#include <memory>
 
 // CGP parameters
-const int circuit_rows = 8;
-const int circuit_columns = 10;
-const int circuit_lback = 1;
-const int circuit_inputs = 25;
-const int circtuit_outputs = 1;
+const int circuit_num_rows = 8;
+const int circuit_num_columns = 10;
+const int circuit_lback_value = 1;
+const int circuit_num_inputs = 25;
+const int circtuit_num_outputs = 1;
+const int circtuit_num_functions = 16;
 
-using CGPComponent = int; // for now
+struct CGPComponent
+{
+    int input1;
+    int input2;
+    int output;
+    int function_num;
+};
 
 template <const size_t MatrixRows, const size_t MatrixColumns>
 using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
@@ -40,10 +48,13 @@ private:
     int l_back_;
     int num_inputs_;
     int num_outputs_;
+    ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
+    int output_unit_;
 
 public:
-    CGPCircuit ();
+    CGPCircuit () = default;
     virtual ~CGPCircuit () = default;
+    void createRandomCircuitValues();
 
 private:
     void setRowsNumber(const int num_rows);

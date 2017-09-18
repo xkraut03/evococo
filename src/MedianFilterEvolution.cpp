@@ -35,6 +35,7 @@ using Unit = int;
 void generateFirstPopulation(Population& population)
 {
     CGPCircuit new_population;
+    new_population.createRandomCircuitValues();
     // for (auto unit : new_population)
     // {
     //     unit.setRowsNumber(circuit_rows);
