@@ -50,12 +50,14 @@ private:
     int num_outputs_;
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
+    std::array<int, circuit_num_inputs> input_;
 
 public:
     CGPCircuit () = default;
     virtual ~CGPCircuit () = default;
     void createRandomCircuitValues();
     void randomlyMutate();
+    void setInput(std::array<int, circuit_num_inputs>& input);
 
 private:
     void setRowsNumber(const int num_rows);

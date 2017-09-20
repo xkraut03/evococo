@@ -70,12 +70,16 @@ void CGPCircuit::randomlyMutate()
                 circuit_matrix_[row][col].input2 = std::rand() % num_units;
             break;
             case 2: // change function
-                circuit_matrix_[row][col].function = std::rand() % circtuit_num_functions;
+                circuit_matrix_[row][col].function_num = std::rand() % circtuit_num_functions;
             break;
         }
     }
 }
 
+void CGPCircuit::setInput(std::array<int, circuit_num_inputs>& input)
+{
+    input_ = input;
+}
 
 void CGPCircuit::setRowsNumber(const int num_rows)
 {
