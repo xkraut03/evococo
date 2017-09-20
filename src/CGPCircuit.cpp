@@ -44,9 +44,38 @@ void CGPCircuit::createRandomCircuitValues()
         }
     }
 
-    int last_column_offset = (circuit_num_columns - 1) * circuit_num_rows;
-    output_unit_ = (std::rand() % circuit_num_rows) + last_column_offset + circuit_num_inputs;
+    output_unit_ = std::rand() % (circuit_num_rows * circuit_num_columns);
 }
+
+void CGPCircuit::randomlyMutate()
+{
+    std::srand(std::time(0));
+    const int num_units = circuit_num_rows + circuit_num_columns;
+    int target_unit = std::rand() % (num_units + circtuit_num_outputs);
+    if (target_unit >= num_units) // change output
+    {
+        output_unit_ = std::rand() % num_units;
+    }
+    else
+    {
+        int action = std::rand() % 3;
+        int row = target_unit % circuit_num_rows;
+        int col = target_unit % circuit_num_columns;
+        switch (action)
+        {
+            case 0: // change input 1
+                circuit_matrix_[row][col].input1 = std::rand() % num_units;
+            break;
+            case 1: // change input 2
+                circuit_matrix_[row][col].input2 = std::rand() % num_units;
+            break;
+            case 2: // change function
+                circuit_matrix_[row][col].function = std::rand() % circtuit_num_functions;
+            break;
+        }
+    }
+}
+
 
 void CGPCircuit::setRowsNumber(const int num_rows)
 {

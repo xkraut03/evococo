@@ -55,6 +55,7 @@ public:
     CGPCircuit () = default;
     virtual ~CGPCircuit () = default;
     void createRandomCircuitValues();
+    void randomlyMutate();
 
 private:
     void setRowsNumber(const int num_rows);
