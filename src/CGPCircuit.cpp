@@ -81,6 +81,107 @@ void CGPCircuit::setInput(std::array<int, circuit_num_inputs>& input)
     input_ = input;
 }
 
+int CGPCircuit::getOutput(const CGPComponent& unit)
+{
+    int x, y;
+    if (unit.input1 < circuit_num_inputs)
+    {
+        x = input_[unit.input1];
+    }
+    else
+    {
+        int row = unit.input1 % circuit_num_rows;
+        int col = unit.input1 % circuit_num_columns;
+        x = circuit_matrix_[row][col].output;
+    }
+
+    if (unit.input1 < circuit_num_inputs)
+    {
+        y = input_[unit.input1];
+    }
+    else
+    {
+        int row = unit.input1 % circuit_num_rows;
+        int col = unit.input1 % circuit_num_columns;
+        y = circuit_matrix_[row][col].output;
+    }
+
+    return doSpecificOperation(x, y, unit.function_num);
+}
+
+int CGPCircuit::doSpecificOperation(const int x, const int y, const int function)
+{
+    int result;
+    switch (function)
+    {
+        case 0:
+            result = 255;
+        break;
+        case 1:
+            result = x;
+        break;
+        case 2:
+            result = 255 - x;
+        break;
+        case 3:
+            result = x | y;
+        break;
+        case 4:
+            result = (255 - x) | y;
+        break;
+        case 5:
+            result = x & y;
+        break;
+        case 6:
+            result = 255 - (x & y);
+        break;
+        case 7:
+            result = x ^ y;
+        break;
+        case 8:
+            result = x >> 1;
+        break;
+        case 9:
+            result = x >> 2;
+        break;
+        case 10:
+            result = (x << 4) | (y >> 4);
+        break;
+        case 11:
+            result = (uint8_t)(x + y);
+        break;
+        case 12:
+            result = (x + y) > 255 ? 255 : x + y;
+        break;
+        case 13:
+            result = (x + y) >> 1;
+        break;
+        case 14:
+            result = (x > y) ? x : y;
+        break;
+        case 15:
+            result = (x < y) ? x : y;
+        break;
+    }
+
+    return result;
+}
+
+
+int CGPCircuit::calculateOutput()
+{
+    for (int col = 0; col < circuit_num_columns; ++col)
+    {
+        for (int row = 0; row < circuit_num_rows; ++row)
+        {
+            circuit_matrix_[row][col].output = getOutput(circuit_matrix_[row][col]);
+        }
+    }
+    return 0;
+}
+
+
+
 void CGPCircuit::setRowsNumber(const int num_rows)
 {
     num_rows_ = num_rows;

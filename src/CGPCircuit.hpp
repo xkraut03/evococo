@@ -65,4 +65,7 @@ private:
     void setLBackValue(const int l_back_value);
     void setInputsNumber(const int num_inputs);
     void setOutputsNumber(const int num_outputs);
+    int calculateOutput();
+    int doSpecificOperation(const int x, const int y, const int function);
+    int getOutput(const CGPComponent& unit);
 };
