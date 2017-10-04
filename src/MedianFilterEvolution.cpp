@@ -29,44 +29,11 @@ MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_p
     noise_image_.ReadFromFile(noise_image_path.c_str());
 }
 
-using Population = int[20];
-using Unit = int;
-
-void generateFirstPopulation(Population& population)
-{
-    CGPCircuit new_population;
-    new_population.initRandomly();
-    std::cout << "Constexpr: " << new_population.getOutput() << '\n';
-
-    for (size_t i = 0; i < 20; ++i) {
-        population[i] = i;
-    }
-}
-
-Unit selectBestUnit(Population& population)
-{
-    return population[0];
-}
-
-void mutate(Unit& unit)
-{
-    unit = 42;
-}
-
-void generatePopulationFromParent(Unit parent, Population& population)
-{
-    for (auto& individual : population)
-    {
-        mutate(individual);
-    }
-}
-
 void MedianFilterEvolution::evolve()
 {
     Population population;
     generateFirstPopulation(population);
     Unit the_best_unit = selectBestUnit(population);
-    std::cout << "The first best solution is: " << the_best_unit << "\n";
 
     for (int cycle = 0; cycle < num_generations; ++cycle)
     {
@@ -74,5 +41,34 @@ void MedianFilterEvolution::evolve()
         the_best_unit = selectBestUnit(population);
     }
 
-    std::cout << "The best at the end solution is: " << the_best_unit << "\n";
+    std::cout << "The best at the end solution is: " << getFitness(the_best_unit) << "\n";
+}
+
+void MedianFilterEvolution::generateFirstPopulation(Population& population)
+{
+    for (auto& p : population)
+        p.initRandomly();
+}
+
+MedianFilterEvolution::Unit MedianFilterEvolution::selectBestUnit(Population& population)
+{
+    return population[0];
+}
+
+void MedianFilterEvolution::mutate(Unit& unit)
+{
+    unit.mutateRandomly();
+}
+
+void MedianFilterEvolution::generatePopulationFromParent(Unit parent, Population& population)
+{
+    for (auto& individual : population)
+    {
+        mutate(individual);
+    }
+}
+
+int MedianFilterEvolution::getFitness(const Unit& unit)
+{
+    return 42;
 }
