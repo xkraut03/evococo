@@ -26,8 +26,8 @@ ComponentEvolver.o: $(SOURCE_FOLDER)/ComponentEvolver.cpp \
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/ComponentEvolver.cpp -o ComponentEvolver.o
 
 MedianFilterEvolution.o: $(SOURCE_FOLDER)/MedianFilterEvolution.cpp \
-	 $(SOURCE_FOLDER)/MedianFilterEvolution.hpp
-	 $(SOURCE_FOLDER)/CGPCircuit.hpp
+	 $(SOURCE_FOLDER)/MedianFilterEvolution.hpp \
+	 $(SOURCE_FOLDER)/CGPCircuit.hpp \
 	 $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/MedianFilterEvolution.cpp -o MedianFilterEvolution.o
 
