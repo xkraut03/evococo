@@ -17,60 +17,71 @@
 // limitations under the License.
 //
 
-#include <iostream>
-#include <vector>
 #include <cstdlib>
-#include <ctime>
 
 #include "CGPCircuit.hpp"
 
-
-void CGPCircuit::createRandomCircuitValues()
+int CGPCircuit::indexToColumn(const int index)
 {
-    std::srand(std::time(0));
-    for (auto row : circuit_matrix_)
+    return index / circuit_num_rows;
+}
+
+int CGPCircuit::indexToRow(const int index)
+{
+    return index % circuit_num_rows;
+}
+
+void CGPCircuit::initRandomly()
+{
+    for (auto& row : circuit_matrix_)
     {
         int column_offset = 0;
-        for (auto unit : row)
+        for (auto& unit : row)
         {
-            int random = std::rand() % (circuit_num_inputs + circuit_num_rows);
-            unit.input1 = (random > circuit_num_inputs) ? (random + column_offset) : random;
+            int random = std::rand() % (circuit_num_inputs + (column_offset * circuit_num_rows));
+            unit.input1 = random;
 
-            random = std::rand() % (circuit_num_inputs + circuit_num_rows);
-            unit.input2 = (random > circuit_num_inputs) ? (random + column_offset) : random;
+            random = std::rand() % (circuit_num_inputs + (column_offset * circuit_num_rows));
+            unit.input2 = random;
 
-            unit.function_num = random % circtuit_num_functions;
+            random = std::rand() % circtuit_num_functions;
+            unit.function_num = random;
             ++column_offset;
         }
     }
 
-    output_unit_ = std::rand() % (circuit_num_rows * circuit_num_columns);
+    output_unit_ = circuit_num_inputs + (std::rand() % (circuit_num_rows * circuit_num_columns));
 }
 
-void CGPCircuit::randomlyMutate()
+void CGPCircuit::mutateRandomly()
 {
-    std::srand(std::time(0));
-    const int num_units = circuit_num_rows + circuit_num_columns;
-    int target_unit = std::rand() % (num_units + circtuit_num_outputs);
+    const int num_units = circuit_num_rows * circuit_num_columns;
+    int target_unit = std::rand() % num_units;
     if (target_unit >= num_units) // change output
     {
-        output_unit_ = std::rand() % num_units;
+        // we don't allow output to be connected directly to eny of the inputs
+        // this can be changed in the future, but because this is mainly used for
+        // filter with only one output, this seems unnecessary
+        output_unit_ = std::rand() % (num_units + circuit_num_inputs);
     }
     else
     {
-        int action = std::rand() % 3;
-        int row = target_unit % circuit_num_rows;
-        int col = target_unit % circuit_num_columns;
+        const int action = std::rand() % 3;
+        const int row = indexToRow(target_unit);
+        const int col = indexToColumn(target_unit);
         switch (action)
         {
             case 0: // change input 1
-                circuit_matrix_[row][col].input1 = std::rand() % num_units;
+                circuit_matrix_[row][col].input1 = std::rand() %
+                    (circuit_num_inputs + (col * circuit_num_rows));
             break;
             case 1: // change input 2
-                circuit_matrix_[row][col].input2 = std::rand() % num_units;
+                circuit_matrix_[row][col].input2 = std::rand() %
+                    (circuit_num_inputs + (col * circuit_num_rows));
             break;
             case 2: // change function
-                circuit_matrix_[row][col].function_num = std::rand() % circtuit_num_functions;
+                circuit_matrix_[row][col].function_num = std::rand() %
+                    circtuit_num_functions;
             break;
         }
     }
@@ -81,7 +92,22 @@ void CGPCircuit::setInput(std::array<int, circuit_num_inputs>& input)
     input_ = input;
 }
 
-int CGPCircuit::getOutput(const CGPComponent& unit)
+int CGPCircuit::getOutput()
+{
+    for (int col = 0; col < circuit_num_columns; ++col)
+    {
+        for (int row = 0; row < circuit_num_rows; ++row)
+        {
+            circuit_matrix_[row][col].output = getComponentOutput(circuit_matrix_[row][col]);
+        }
+    }
+
+    const int out_row = indexToRow(output_unit_);
+    const int out_col = indexToColumn(output_unit_);
+    return circuit_matrix_[out_row][out_col].output;
+}
+
+int CGPCircuit::getComponentOutput(const CGPComponent& unit)
 {
     int x, y;
     if (unit.input1 < circuit_num_inputs)
@@ -90,19 +116,19 @@ int CGPCircuit::getOutput(const CGPComponent& unit)
     }
     else
     {
-        int row = unit.input1 % circuit_num_rows;
-        int col = unit.input1 % circuit_num_columns;
+        const int row = indexToRow(unit.input1 + circuit_num_inputs);
+        const int col = indexToColumn(unit.input1 + circuit_num_inputs);
         x = circuit_matrix_[row][col].output;
     }
 
-    if (unit.input1 < circuit_num_inputs)
+    if (unit.input2 < circuit_num_inputs)
     {
-        y = input_[unit.input1];
+        y = input_[unit.input2];
     }
     else
     {
-        int row = unit.input1 % circuit_num_rows;
-        int col = unit.input1 % circuit_num_columns;
+        const int row = indexToRow(unit.input2 + circuit_num_inputs);
+        const int col = indexToColumn(unit.input2 + circuit_num_inputs);
         y = circuit_matrix_[row][col].output;
     }
 
@@ -111,7 +137,7 @@ int CGPCircuit::getOutput(const CGPComponent& unit)
 
 int CGPCircuit::doSpecificOperation(const int x, const int y, const int function)
 {
-    int result;
+    int result = 0;
     switch (function)
     {
         case 0:
@@ -165,44 +191,4 @@ int CGPCircuit::doSpecificOperation(const int x, const int y, const int function
     }
 
     return result;
-}
-
-
-int CGPCircuit::calculateOutput()
-{
-    for (int col = 0; col < circuit_num_columns; ++col)
-    {
-        for (int row = 0; row < circuit_num_rows; ++row)
-        {
-            circuit_matrix_[row][col].output = getOutput(circuit_matrix_[row][col]);
-        }
-    }
-    return 0;
-}
-
-
-
-void CGPCircuit::setRowsNumber(const int num_rows)
-{
-    num_rows_ = num_rows;
-}
-
-void CGPCircuit::setColumnsNumber(const int num_columns)
-{
-    num_columns_ = num_columns;
-}
-
-void CGPCircuit::setLBackValue(const int l_back_value)
-{
-    l_back_ = l_back_value;
-}
-
-void CGPCircuit::setInputsNumber(const int num_inputs)
-{
-    num_inputs_ = num_inputs;
-}
-
-void CGPCircuit::setOutputsNumber(const int num_outputs)
-{
-    num_outputs_ = num_outputs;
 }

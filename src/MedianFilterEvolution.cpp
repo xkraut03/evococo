@@ -35,15 +35,8 @@ using Unit = int;
 void generateFirstPopulation(Population& population)
 {
     CGPCircuit new_population;
-    new_population.createRandomCircuitValues();
-    // for (auto unit : new_population)
-    // {
-    //     unit.setRowsNumber(circuit_rows);
-    //     unit.setColumnsNumber(circuit_columns);
-    //     unit.setLBackValue(circuit_lback);
-    //     unit.setInputsNumber(circuit_inputs);
-    //     unit.setOutputsNumber(circtuit_outputs);
-    // }
+    new_population.initRandomly();
+    std::cout << "Constexpr: " << new_population.getOutput() << '\n';
 
     for (size_t i = 0; i < 20; ++i) {
         population[i] = i;

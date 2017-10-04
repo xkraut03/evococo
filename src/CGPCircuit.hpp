@@ -20,12 +20,11 @@
 #pragma once
 
 #include <array>
-#include <memory>
 
 // CGP parameters
 const int circuit_num_rows = 8;
 const int circuit_num_columns = 10;
-const int circuit_lback_value = 1;
+// const int circuit_lback_value = 1; lback is max for now
 const int circuit_num_inputs = 25;
 const int circtuit_num_outputs = 1;
 const int circtuit_num_functions = 16;
@@ -41,31 +40,25 @@ struct CGPComponent
 template <const size_t MatrixRows, const size_t MatrixColumns>
 using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
 
-class CGPCircuit {
+class CGPCircuit
+{
 private:
-    int num_rows_;
-    int num_columns_;
-    int l_back_;
-    int num_inputs_;
-    int num_outputs_;
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
     std::array<int, circuit_num_inputs> input_;
 
 public:
-    CGPCircuit () = default;
-    virtual ~CGPCircuit () = default;
-    void createRandomCircuitValues();
-    void randomlyMutate();
+    CGPCircuit() = default;
+    virtual ~CGPCircuit() = default;
+
+    void initRandomly();
+    void mutateRandomly();
     void setInput(std::array<int, circuit_num_inputs>& input);
+    int getOutput();
 
 private:
-    void setRowsNumber(const int num_rows);
-    void setColumnsNumber(const int num_columns);
-    void setLBackValue(const int l_back_value);
-    void setInputsNumber(const int num_inputs);
-    void setOutputsNumber(const int num_outputs);
-    int calculateOutput();
     int doSpecificOperation(const int x, const int y, const int function);
-    int getOutput(const CGPComponent& unit);
+    int getComponentOutput(const CGPComponent& unit);
+    int indexToRow(const int index);
+    int indexToColumn(const int index);
 };
