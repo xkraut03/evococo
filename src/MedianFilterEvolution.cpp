@@ -17,6 +17,8 @@
 // limitations under the License.
 //
 
+#include <limits>
+
 #include "MedianFilterEvolution.hpp"
 
 #include "../lib/EasyBMP/EasyBMP.h"
@@ -32,43 +34,58 @@ MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_p
 void MedianFilterEvolution::evolve()
 {
     Population population;
-    generateFirstPopulation(population);
-    Unit the_best_unit = selectBestUnit(population);
+    generateRandomPopulation(population);
+    Individual best_unit = selectBestUnit(population);
 
     for (int cycle = 0; cycle < num_generations; ++cycle)
     {
-        generatePopulationFromParent(the_best_unit, population);
-        the_best_unit = selectBestUnit(population);
+        generatePopulationFromParent(best_unit, population);
+        best_unit = selectBestUnit(population);
     }
 
-    std::cout << "The best at the end solution is: " << getFitness(the_best_unit) << "\n";
+    std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
 }
 
-void MedianFilterEvolution::generateFirstPopulation(Population& population)
+void MedianFilterEvolution::generateRandomPopulation(Population& population)
 {
     for (auto& p : population)
         p.initRandomly();
 }
 
-MedianFilterEvolution::Unit MedianFilterEvolution::selectBestUnit(Population& population)
+MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Population& population)
 {
-    return population[0];
+    int best_fitness = std::numeric_limits<int>::max();
+    int best_index = 0;
+    for (int i = 0; i < population_size; ++i)
+    {
+        if (int fitness = getFitness(population[i]) <= best_fitness)
+        {
+            best_fitness = fitness;
+            best_index = i;
+        }
+    }
+
+    return population[best_index];
 }
 
-void MedianFilterEvolution::mutate(Unit& unit)
+void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Population& population)
 {
-    unit.mutateRandomly();
-}
-
-void MedianFilterEvolution::generatePopulationFromParent(Unit parent, Population& population)
-{
+    population[0] = parent;
+    bool skip_first = true;
     for (auto& individual : population)
     {
-        mutate(individual);
+        if (skip_first)
+        {
+            skip_first = false;
+            continue;
+        }
+
+        individual = parent;
+        individual.mutateRandomly();
     }
 }
 
-int MedianFilterEvolution::getFitness(const Unit& unit)
+int MedianFilterEvolution::getFitness(Individual& unit)
 {
-    return 42;
+    return unit.getOutput();
 }

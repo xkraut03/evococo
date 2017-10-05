@@ -35,15 +35,14 @@ public:
     void evolve();
 
 private:
-    using Unit = CGPCircuit;
-    using Population = Unit[population_size];
+    using Individual = CGPCircuit;
+    using Population = std::array<Individual, population_size>;
     BMP original_image_;
     BMP noise_image_;
 
 private:
-    void generateFirstPopulation(Population& population);
-    Unit selectBestUnit(Population& population);
-    void mutate(Unit& unit);
-    void generatePopulationFromParent(Unit parent, Population& population);
-    int getFitness(const Unit& unit);
+    void generateRandomPopulation(Population& population);
+    Individual selectBestUnit(Population& population);
+    void generatePopulationFromParent(Individual parent, Population& population);
+    int getFitness(Individual& unit);
 };
