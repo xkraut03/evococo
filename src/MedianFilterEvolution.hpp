@@ -19,8 +19,7 @@
 
 #pragma once
 
-#include "../lib/EasyBMP/EasyBMP.h"
-
+#include "Image.hpp"
 #include "CGPCircuit.hpp"
 
 // evolutionary algorithm parameters
@@ -31,14 +30,13 @@ class MedianFilterEvolution
 {
 public:
     MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path);
-    ~MedianFilterEvolution(){};
     void evolve();
 
 private:
     using Individual = CGPCircuit;
     using Population = std::array<Individual, population_size>;
-    BMP original_image_;
-    BMP noise_image_;
+    Image original_image_;
+    Image noise_image_;
 
 private:
     void generateRandomPopulation(Population& population);

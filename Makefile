@@ -7,7 +7,7 @@ LIBS_FOLDER = lib
 LD = clang++
 LDFLAGS = -g
 
-OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o
+OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o Image.o
 
 all: $(OBJS)
 	$(LD) $(LDFLAGS) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
@@ -27,12 +27,17 @@ ComponentEvolver.o: $(SOURCE_FOLDER)/ComponentEvolver.cpp \
 
 MedianFilterEvolution.o: $(SOURCE_FOLDER)/MedianFilterEvolution.cpp \
 	 $(SOURCE_FOLDER)/MedianFilterEvolution.hpp \
-	 $(SOURCE_FOLDER)/CGPCircuit.hpp \
-	 $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
+	 $(SOURCE_FOLDER)/CGPCircuit.hpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/MedianFilterEvolution.cpp -o MedianFilterEvolution.o
 
 CGPCircuit.o: $(SOURCE_FOLDER)/CGPCircuit.cpp $(SOURCE_FOLDER)/CGPCircuit.hpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/CGPCircuit.cpp -o CGPCircuit.o
+
+Image.o: $(SOURCE_FOLDER)/Image.cpp \
+		 $(SOURCE_FOLDER)/Image.hpp \
+		 $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
+		$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/Image.cpp -o Image.o
+
 
 clean:
 	rm *.o

@@ -26,10 +26,8 @@
 #include "CGPCircuit.hpp"
 
 MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path)
-{
-    original_image_.ReadFromFile(original_image_path.c_str());
-    noise_image_.ReadFromFile(noise_image_path.c_str());
-}
+: original_image_ {original_image_path}, noise_image_ {noise_image_path}
+{}
 
 void MedianFilterEvolution::evolve()
 {
@@ -39,6 +37,8 @@ void MedianFilterEvolution::evolve()
 
     for (int cycle = 0; cycle < num_generations; ++cycle)
     {
+        if (cycle % 50 == 0)
+            std::cout << "50th cycle\n";
         generatePopulationFromParent(best_unit, population);
         best_unit = selectBestUnit(population);
     }
