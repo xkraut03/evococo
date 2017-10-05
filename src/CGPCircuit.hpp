@@ -48,9 +48,6 @@ private:
     std::array<int, circuit_num_inputs> input_;
 
 public:
-    CGPCircuit() = default;
-    virtual ~CGPCircuit() = default;
-
     void initRandomly();
     void mutateRandomly();
     void setInput(std::array<int, circuit_num_inputs>& input);
