@@ -1,12 +1,12 @@
 SOURCE_FOLDER = src
 BUILD_FOLDER = build
 PROJECT_NAME = evococo
-CXX = g++
-# CXX = clang++
+# CXX = g++
+CXX = clang++
 CXXFLAGS = -g -std=c++1z -O3 -pedantic -Wall -Werror -c
 LIBS_FOLDER = lib
-LD = g++
-# LD = clang++
+# LD = g++
+LD = clang++
 LDFLAGS = -g
 
 OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o Image.o
@@ -45,5 +45,5 @@ clean:
 	rm *.o
 	rm $(BUILD_FOLDER)/$(PROJECT_NAME)
 
-run:
+run: all
 	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
