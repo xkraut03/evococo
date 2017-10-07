@@ -1,10 +1,12 @@
 SOURCE_FOLDER = src
 BUILD_FOLDER = build
 PROJECT_NAME = evococo
-CXX = clang++
+CXX = g++
+# CXX = clang++
 CXXFLAGS = -g -std=c++1z -O3 -pedantic -Wall -Werror -c
 LIBS_FOLDER = lib
-LD = clang++
+LD = g++
+# LD = clang++
 LDFLAGS = -g
 
 OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o Image.o
