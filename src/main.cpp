@@ -18,8 +18,6 @@
 //
 
 #include <iostream>
-#include <cstdlib>
-#include <ctime>
 
 #include "ComponentEvolver.hpp"
 
@@ -31,8 +29,6 @@ int main(int argc, char const *argv[])
         return -1;
     }
     std::cout << "Let's evolve something!" << '\n';
-    // we don't need more randomness "quality" than simple std::rand()
-    std::srand(std::time(0));
 
     ComponentEvolver median_filter_evolver;
     median_filter_evolver.addImages(argv[1], argv[2]);

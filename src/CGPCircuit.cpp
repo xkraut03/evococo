@@ -19,6 +19,8 @@
 
 #include <cstdlib>
 
+#include "../lib/effolkronium/random.hpp"
+
 #include "CGPCircuit.hpp"
 
 int CGPCircuit::indexToColumn(const int index)
@@ -33,55 +35,57 @@ int CGPCircuit::indexToRow(const int index)
 
 void CGPCircuit::initRandomly()
 {
+    using Random = effolkronium::random_static;
     for (auto& row : circuit_matrix_)
     {
         int column_offset = 0;
         for (auto& unit : row)
         {
-            int random = std::rand() % (circuit_num_inputs + (column_offset * circuit_num_rows));
+            auto random = Random::get(0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
             unit.input1 = random;
 
-            random = std::rand() % (circuit_num_inputs + (column_offset * circuit_num_rows));
+            random = Random::get(0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
             unit.input2 = random;
 
-            random = std::rand() % circtuit_num_functions;
+            random = Random::get(0, circtuit_num_functions - 1);
             unit.function_num = random;
             ++column_offset;
         }
     }
 
-    output_unit_ = circuit_num_inputs + (std::rand() % (circuit_num_rows * circuit_num_columns));
+    output_unit_ = circuit_num_inputs + Random::get(0, circuit_num_rows * circuit_num_columns - 1);
 }
 
 void CGPCircuit::mutateRandomly()
 {
+    using Random = effolkronium::random_static;
+
     const int num_units = circuit_num_rows * circuit_num_columns;
-    int target_unit = std::rand() % num_units;
+    int target_unit = Random::get(0, num_units);
     if (target_unit >= num_units) // change output
     {
         // we don't allow output to be connected directly to eny of the inputs
         // this can be changed in the future, but because this is mainly used for
         // filter with only one output, this seems unnecessary
-        output_unit_ = std::rand() % (num_units + circuit_num_inputs);
+        output_unit_ = Random::get(0, num_units + circuit_num_inputs - 1);
     }
     else
     {
-        const int action = std::rand() % 3;
+        const int action = Random::get({1, 2, 3});
         const int row = indexToRow(target_unit);
         const int col = indexToColumn(target_unit);
         switch (action)
         {
             case 0: // change input 1
-                circuit_matrix_[row][col].input1 = std::rand() %
-                    (circuit_num_inputs + (col * circuit_num_rows));
+                circuit_matrix_[row][col].input1 =
+                    Random::get(0, circuit_num_inputs + (col * circuit_num_rows) - 1);
             break;
             case 1: // change input 2
-                circuit_matrix_[row][col].input2 = std::rand() %
-                    (circuit_num_inputs + (col * circuit_num_rows));
+                circuit_matrix_[row][col].input2 =
+                    Random::get(0, circuit_num_inputs + (col * circuit_num_rows) - 1);
             break;
             case 2: // change function
-                circuit_matrix_[row][col].function_num = std::rand() %
-                    circtuit_num_functions;
+                circuit_matrix_[row][col].function_num = Random::get(0, circtuit_num_functions - 1);
             break;
         }
     }
