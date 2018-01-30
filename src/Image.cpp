@@ -21,4 +21,29 @@
 Image::Image(const std::string& img_path)
 {
     bmp_image_.ReadFromFile(img_path.c_str());
+    width_ = bmp_image_.TellWidth();
+    height_ = bmp_image_.TellHeight();
+    int padding = (window_size == 25) ? 2 : 0;
+    image_ = { width_ + 2 * padding, height_ + 2 * padding};
+    window_pos_ = 0;
+}
+
+void Image::resetWindowPosition()
+{
+    window_pos_ = 0;
+}
+
+const Image::Window& Image::getNextWindow()
+{
+    return window_;
+}
+
+Image::Pixel Image::getPixel(const int x, const int y)
+{
+    return pixel_matrix_[x][y];
+}
+
+Image::Pixel Image::operator()(const int x, const int y)
+{
+    return getPixel(x, y);
 }

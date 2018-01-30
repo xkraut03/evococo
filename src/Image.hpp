@@ -17,18 +17,72 @@
 // limitations under the License.
 
 #include <array>
+#include <vector>
+#include <iostream>
 
 #include "../lib/EasyBMP/EasyBMP.h"
 
 const int window_size = 25;
 
+template<typename T>
+class ImageWrapper
+{
+private:
+    std::vector<std::vector<T>> image_;
+    int width_;
+    int height_;
+
+public:
+    ImageWrapper() : width_ {0}, height_ {0}
+    {
+        printDimensions();
+    }
+
+    ImageWrapper(const int width, const int height) :
+        width_ {width}, height_ {height}
+    {
+        printDimensions();
+        std::vector<T> row(width);
+        row.shrink_to_fit();
+        for (int i = 0; i < height_; ++i)
+            image_.push_back(row);
+        image_.shrink_to_fit();
+    }
+
+    void printDimensions() const { std:: cout << "image size: ["
+        << width_ << "," << height_ << "]\n"; }
+
+    T& operator()(const int x, const int y)
+    {
+        if (x < 0 || y < 0)
+             throw std::out_of_range( "received negative value" );
+        if (x < height_)
+            if (y < width_)
+                return image_[x][y];
+
+
+        return image_[0][0];
+    }
+};
+
 class Image
 {
 public:
+    using Pixel = uint8_t;
+    using Window = std::array<Pixel, window_size>;
+
     Image(const std::string& img_path);
-    void resetWindow();
-    std::array<uint8_t, window_size> getWindow();
+    void resetWindowPosition();
+    const Window& getNextWindow();
+    Pixel getPixel(const int x, const int y);
+    Pixel operator()(const int x, const int y);
 
 private:
+    std::vector<std::vector<Pixel>> pixel_matrix_;
     BMP bmp_image_;
+    int width_;
+    int height_;
+    ImageWrapper<Pixel> image_;
+    int window_pos_;
+    Window window_;
 };
