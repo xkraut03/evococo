@@ -20,7 +20,9 @@
 #include "ComponentEvolver.hpp"
 
 #include <string>
+#include <string_view>
 #include <memory>
+#include <fstream>
 
 #include "MedianFilterEvolution.hpp"
 
@@ -36,4 +38,7 @@ void ComponentEvolver::evolve()
     median_filter_evolver_->evolve();
 }
 
-void ComponentEvolver::filterOriginalImageToFile(const std::string& output_image_path){}
+void ComponentEvolver::filterOriginalImageToFile(const std::string_view& output_image_path)
+{
+    // std::ofstream out_img(output_image_path.data());
+}

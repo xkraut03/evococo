@@ -20,6 +20,7 @@
 #pragma once
 
 #include <string>
+#include <string_view>
 #include <memory>
 
 #include "MedianFilterEvolution.hpp"
@@ -29,7 +30,7 @@ class ComponentEvolver
 public:
     void addImages(const std::string& original_image_path, const std::string& noise_image_path);
     void evolve();
-    void filterOriginalImageToFile(const std::string& output_image_path);
+    void filterOriginalImageToFile(const std::string_view& output_image_path);
 
 private:
     std::string original_image_path_;
