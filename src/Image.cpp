@@ -27,9 +27,9 @@ Image::Image()
     img_path_ = "";
 }
 
-Image::Image(const std::string& img_path)
+Image::Image(std::string_view img_path)
 {
-    bmp_image_.ReadFromFile(img_path.c_str());
+    bmp_image_.ReadFromFile(img_path.data());
     width_ = bmp_image_.TellWidth();
     height_ = bmp_image_.TellHeight();
     // const int padding = (window_size == 25) ? 2 : 0;

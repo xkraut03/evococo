@@ -35,7 +35,7 @@ public:
     using iterator = class ImageIterator;
 
     Image();
-    Image(const std::string& img_path);
+    Image(std::string_view img_path);
     Pixel getPixel(const int x, const int y);
     Pixel operator()(const int x, const int y);
     iterator begin();
