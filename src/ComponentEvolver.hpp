@@ -28,9 +28,9 @@
 class ComponentEvolver
 {
 public:
-    void addImages(const std::string& original_image_path, const std::string& noise_image_path);
+    void addImages(std::string_view original_image_path, std::string_view noise_image_path);
     void evolve();
-    void filterOriginalImageToFile(const std::string_view& output_image_path);
+    void filterOriginalImageToFile(std::string_view output_image_path);
 
 private:
     std::string original_image_path_;

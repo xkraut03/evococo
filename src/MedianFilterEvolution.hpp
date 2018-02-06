@@ -29,7 +29,7 @@ const int num_generations = 500;
 class MedianFilterEvolution
 {
 public:
-    MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path);
+    MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path);
     void evolve();
 
 private:

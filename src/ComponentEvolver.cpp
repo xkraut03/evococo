@@ -26,7 +26,7 @@
 
 #include "MedianFilterEvolution.hpp"
 
-void ComponentEvolver::addImages(const std::string& original_image_path, const std::string& noise_image_path)
+void ComponentEvolver::addImages(std::string_view original_image_path, std::string_view noise_image_path)
 {
     original_image_path_ = original_image_path;
     noise_image_path_ = noise_image_path;
@@ -38,7 +38,7 @@ void ComponentEvolver::evolve()
     median_filter_evolver_->evolve();
 }
 
-void ComponentEvolver::filterOriginalImageToFile(const std::string_view& output_image_path)
+void ComponentEvolver::filterOriginalImageToFile(std::string_view output_image_path)
 {
     // std::ofstream out_img(output_image_path.data());
 }

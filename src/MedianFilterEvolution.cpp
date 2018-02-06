@@ -18,16 +18,33 @@
 //
 
 #include <limits>
+#include <typeinfo>
 
 #include "MedianFilterEvolution.hpp"
 
-#include "../lib/EasyBMP/EasyBMP.h"
+// #include "../lib/EasyBMP/EasyBMP.h"
 
+#include "Image.hpp"
 #include "CGPCircuit.hpp"
 
-MedianFilterEvolution::MedianFilterEvolution(const std::string& original_image_path, const std::string& noise_image_path)
+MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path)
 : original_image_ {original_image_path}, noise_image_ {noise_image_path}
-{}
+{
+    Image tmp = { "../images/barbara-small.bmp" };
+    tmp.isIt();
+    int i = 0;
+    for (auto pixel: tmp)
+    {
+        if (i % 10 == 0)
+        {
+            std::cout << "\n";
+            i = 0;
+        }
+        std::cout << (int)pixel << " ";
+        i++;
+    }
+    std::cout << '\n';
+}
 
 void MedianFilterEvolution::evolve()
 {
@@ -87,5 +104,6 @@ void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Popu
 
 int MedianFilterEvolution::getFitness(Individual& unit)
 {
+    // unit.setInput(std::array<int, circuit_num_inputs> &input)
     return unit.getOutput();
 }
