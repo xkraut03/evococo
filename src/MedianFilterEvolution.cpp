@@ -29,22 +29,7 @@
 
 MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path)
 : original_image_ {original_image_path}, noise_image_ {noise_image_path}
-{
-    Image tmp = { "../images/barbara-small.bmp" };
-    tmp.isIt();
-    int i = 0;
-    for (auto pixel: tmp)
-    {
-        if (i % 10 == 0)
-        {
-            std::cout << "\n";
-            i = 0;
-        }
-        std::cout << (int)pixel << " ";
-        i++;
-    }
-    std::cout << '\n';
-}
+{}
 
 void MedianFilterEvolution::evolve()
 {
