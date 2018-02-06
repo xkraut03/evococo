@@ -1,6 +1,7 @@
 # all files in the build/ directory
 build/
 cmake-build-debug
+.idea
 
 # compiled object files
 *.slo
