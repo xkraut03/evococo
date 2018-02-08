@@ -33,8 +33,8 @@ struct CGPComponent
 {
     int input1;
     int input2;
-    int output;
     int function_num;
+    uint8_t output;
 };
 
 template <const size_t MatrixRows, const size_t MatrixColumns>
@@ -45,17 +45,17 @@ class CGPCircuit
 private:
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
-    std::array<int, circuit_num_inputs> input_;
+    std::array<uint8_t, circuit_num_inputs> input_;
 
 public:
     void initRandomly();
     void mutateRandomly();
-    void setInput(std::array<int, circuit_num_inputs>& input);
-    int getOutput();
+    void setInput(std::array<uint8_t, circuit_num_inputs>& input);
+    uint8_t getOutput();
 
 private:
-    int doSpecificOperation(const int x, const int y, const int function);
-    int getComponentOutput(const CGPComponent& unit);
+    uint8_t doSpecificOperation(const uint8_t x, const uint8_t y, const int function);
+    uint8_t getComponentOutput(const CGPComponent& unit);
     int indexToRow(const int index);
     int indexToColumn(const int index);
 };

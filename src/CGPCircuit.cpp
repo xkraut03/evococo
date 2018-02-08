@@ -91,12 +91,12 @@ void CGPCircuit::mutateRandomly()
     }
 }
 
-void CGPCircuit::setInput(std::array<int, circuit_num_inputs>& input)
+void CGPCircuit::setInput(std::array<uint8_t, circuit_num_inputs>& input)
 {
     input_ = input;
 }
 
-int CGPCircuit::getOutput()
+uint8_t CGPCircuit::getOutput()
 {
     for (int col = 0; col < circuit_num_columns; ++col)
     {
@@ -111,9 +111,9 @@ int CGPCircuit::getOutput()
     return circuit_matrix_[out_row][out_col].output;
 }
 
-int CGPCircuit::getComponentOutput(const CGPComponent& unit)
+uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
 {
-    int x, y;
+    uint8_t x, y;
     if (unit.input1 < circuit_num_inputs)
     {
         x = input_[unit.input1];
@@ -139,9 +139,9 @@ int CGPCircuit::getComponentOutput(const CGPComponent& unit)
     return doSpecificOperation(x, y, unit.function_num);
 }
 
-int CGPCircuit::doSpecificOperation(const int x, const int y, const int function)
+uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y, const int function)
 {
-    int result = 0;
+    uint8_t result = 0;
     switch (function)
     {
         case 0:
@@ -178,10 +178,10 @@ int CGPCircuit::doSpecificOperation(const int x, const int y, const int function
             result = (x << 4) | (y >> 4);
         break;
         case 11:
-            result = (uint8_t)(x + y);
+            result = (x + y);
         break;
         case 12:
-            result = (x + y) > 255 ? 255 : x + y;
+            result = ((int)x + (int)y) > 255 ? 255 : x + y;
         break;
         case 13:
             result = (x + y) >> 1;
