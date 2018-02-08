@@ -19,24 +19,29 @@
 
 #pragma once
 
+#include <string_view>
+
 #include "Image.hpp"
 #include "CGPCircuit.hpp"
 
 // evolutionary algorithm parameters
 const int population_size = 20;
-const int num_generations = 500;
+const int num_generations = 100;
 
 class MedianFilterEvolution
 {
 public:
     MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path);
     void evolve();
+    void createFilteredImage(std::string_view output_path);
 
 private:
     using Individual = CGPCircuit;
     using Population = std::array<Individual, population_size>;
     Image original_image_;
     Image noise_image_;
+    Image output_image_;
+    Individual best_unit_;
 
 private:
     void generateRandomPopulation(Population& population);
