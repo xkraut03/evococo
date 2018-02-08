@@ -23,16 +23,13 @@
 
 #include "../lib/EasyBMP/EasyBMP.h"
 
-using pixel_t = uint8_t;
-
-// class ImageIterator;
-
 class Image
 {
 public:
-    using Pixel = pixel_t;
+    using Pixel = uint8_t;
     friend class ImageIterator;
     using iterator = class ImageIterator;
+    using Window = std::array<std::array<Pixel, 5>, 5>;
 
     Image();
     Image(std::string_view img_path);
@@ -41,18 +38,27 @@ public:
     iterator begin();
     iterator end();
     void writeToBMP(std::string_view path);
+    Window getNextWindow();
+    void resetWindow();
+    bool isWindowValid();
+    void printMatrix();
 
 private:
-    std::string img_path_;
-    void printMatrix();
     void fillImageFromBMP();
     void createPadding();
+
     std::vector<std::vector<Pixel>> pixel_matrix_;
     std::vector<std::vector<Pixel>> padded_matrix_;
 
     BMP bmp_image_;
+    std::string img_path_;
     int width_;
     int height_;
+
+    Window win_;
+    int win_x_;
+    int win_y_;
+    bool window_is_valid_;
 };
 
 class ImageIterator

@@ -25,6 +25,7 @@ Image::Image()
     width_ = -1;
     height_ = -1;
     img_path_ = "";
+    resetWindow();
 }
 
 Image::Image(std::string_view img_path)
@@ -35,6 +36,7 @@ Image::Image(std::string_view img_path)
     img_path_ = img_path;
     fillImageFromBMP();
     createPadding();
+    resetWindow();
 }
 
 void Image::printMatrix()
@@ -127,6 +129,60 @@ Image::iterator Image::end()
 {
     return Image::iterator { *this, pixel_matrix_.back().end() };
 }
+
+
+Image::Window Image::getNextWindow()
+{
+    if (width_ >= 5 && height_ >= 5)
+    {
+        if (window_is_valid_)
+        {
+            for (int x = 0; x < 5; ++x)
+                for (int y = 0; y < 5; ++y)
+                    win_[x][y] = padded_matrix_[x + win_x_][y + win_y_];
+
+            ++win_y_;
+            if (win_y_ >= width_)
+            {
+                win_y_ = 0;
+                ++win_x_;
+            }
+            if (win_x_ >= height_)
+            {
+                window_is_valid_ = false;
+            }
+        }
+    }
+
+    return win_;
+}
+
+bool Image::isWindowValid()
+{
+    return window_is_valid_;
+}
+
+void Image::resetWindow()
+{
+    win_x_ = 0;
+    win_y_ = 0;
+    if (width_ >= 5 && height_ >= 5)
+    {
+        for (int x = 0; x < 5; ++x)
+            for (int y = 0; y < 5; ++y)
+                win_[x][y] = padded_matrix_[x][y];
+
+        window_is_valid_ = true;
+    }
+    else
+    {
+        window_is_valid_ = false;
+    }
+}
+
+
+
+
 
 ImageIterator::ImageIterator(Image& img, std::vector<Image::Pixel>::iterator pix)
     : img_ { img }, curr_ { pix }
