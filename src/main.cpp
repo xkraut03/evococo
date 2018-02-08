@@ -33,7 +33,7 @@ int main(int argc, char const *argv[])
     ComponentEvolver median_filter_evolver;
     median_filter_evolver.addImages(argv[1], argv[2]);
     median_filter_evolver.evolve();
-    median_filter_evolver.filterOriginalImageToFile("../images/barbara_cleared.bmp");
+    median_filter_evolver.filterOriginalImageToFile("../build/barbara_cleared.bmp");
 
     return 0;
 }
