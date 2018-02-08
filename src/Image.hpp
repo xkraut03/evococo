@@ -40,6 +40,7 @@ public:
     Pixel operator()(const int x, const int y);
     iterator begin();
     iterator end();
+    void writeToBMP(std::string_view path);
 
 private:
     std::string img_path_;

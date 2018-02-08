@@ -87,6 +87,27 @@ void Image::createPadding()
     padded_matrix_.push_back(bottom);
 }
 
+void Image::writeToBMP(std::string_view path)
+{
+    BMP img;
+    img.SetSize(padded_matrix_.front().size(), padded_matrix_.size());
+    int x = 0;
+    int y = 0;
+    for (auto row : padded_matrix_)
+    {
+        for (auto pix : row)
+        {
+            img(x,y)->Red = pix;
+            img(x,y)->Green = pix;
+            img(x,y)->Blue = pix;
+            ++x;
+        }
+        x = 0;
+        ++y;
+    }
+    img.WriteToFile(std::string(path).c_str());
+}
+
 Image::Pixel Image::getPixel(const int x, const int y)
 {
     return pixel_matrix_[x][y];
