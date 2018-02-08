@@ -40,5 +40,5 @@ void ComponentEvolver::evolve()
 
 void ComponentEvolver::filterOriginalImageToFile(std::string_view output_image_path)
 {
-    // std::ofstream out_img(output_image_path.data());
+    median_filter_evolver_->createFilteredImage(output_image_path);
 }
