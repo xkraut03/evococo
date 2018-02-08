@@ -42,6 +42,7 @@ public:
     void resetWindow();
     bool isWindowValid();
     void printMatrix();
+    void matrixToBMP(std::string_view path);
 
 private:
     void fillImageFromBMP();
@@ -68,7 +69,7 @@ public:
     bool operator==(const ImageIterator& rhs) const;
     bool operator!=(const ImageIterator& rhs) const;
     ImageIterator& operator++();
-    Image::Pixel operator* () const;
+    Image::Pixel& operator* () const;
 
 private:
     Image& img_;

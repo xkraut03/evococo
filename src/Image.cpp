@@ -110,6 +110,27 @@ void Image::writeToBMP(std::string_view path)
     img.WriteToFile(std::string(path).c_str());
 }
 
+void Image::matrixToBMP(std::string_view path)
+{
+    BMP img;
+    img.SetSize(pixel_matrix_.front().size(), pixel_matrix_.size());
+    int x = 0;
+    int y = 0;
+    for (auto row : pixel_matrix_)
+    {
+        for (auto pix : row)
+        {
+            img(x,y)->Red = pix;
+            img(x,y)->Green = pix;
+            img(x,y)->Blue = pix;
+            ++x;
+        }
+        x = 0;
+        ++y;
+    }
+    img.WriteToFile(std::string(path).c_str());
+}
+
 Image::Pixel Image::getPixel(const int x, const int y)
 {
     return pixel_matrix_[x][y];
@@ -216,7 +237,7 @@ ImageIterator& ImageIterator::operator++()
     return *this;
 }
 
-Image::Pixel ImageIterator::operator* () const
+Image::Pixel& ImageIterator::operator* () const
 {
     return *curr_;
 }
