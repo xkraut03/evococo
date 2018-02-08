@@ -32,16 +32,9 @@ Image::Image(std::string_view img_path)
     bmp_image_.ReadFromFile(img_path.data());
     width_ = bmp_image_.TellWidth();
     height_ = bmp_image_.TellHeight();
-    // const int padding = (window_size == 25) ? 2 : 0;
-    fillImageFromBMP();
     img_path_ = img_path;
-}
-
-bool Image::isIt()
-{
-    if (img_path_ == "../images/barbara-small.bmp")
-        printMatrix();
-    return true;
+    fillImageFromBMP();
+    createPadding();
 }
 
 void Image::printMatrix()
@@ -66,6 +59,32 @@ void Image::fillImageFromBMP()
 
     if (bmp_image_.TellHeight() != pixel_matrix_.size())
         throw std::runtime_error("image height missmatch!\n");
+}
+
+void sidesPadding(std::vector<Image::Pixel>& row)
+{
+    row.insert(row.begin(), 2, row.front());
+    row.insert(row.end(), 2, row.back());
+}
+
+void Image::createPadding()
+{
+    // for now, window is 5x5, so padding is +2 lines
+    std::vector<Image::Pixel> top = pixel_matrix_.front();
+    sidesPadding(top);
+    padded_matrix_.push_back(top);
+    padded_matrix_.push_back(top);
+
+    for (auto row : pixel_matrix_)
+    {
+        sidesPadding(row);
+        padded_matrix_.push_back(row);
+    }
+
+    std::vector<Image::Pixel> bottom = pixel_matrix_.back();
+    sidesPadding(bottom);
+    padded_matrix_.push_back(bottom);
+    padded_matrix_.push_back(bottom);
 }
 
 Image::Pixel Image::getPixel(const int x, const int y)

@@ -41,14 +41,14 @@ public:
     iterator begin();
     iterator end();
 
-    bool isIt();
-
-
 private:
     std::string img_path_;
     void printMatrix();
     void fillImageFromBMP();
+    void createPadding();
     std::vector<std::vector<Pixel>> pixel_matrix_;
+    std::vector<std::vector<Pixel>> padded_matrix_;
+
     BMP bmp_image_;
     int width_;
     int height_;
