@@ -91,6 +91,7 @@ void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Popu
 
 int MedianFilterEvolution::getFitness(Individual& unit)
 {
+    noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();
     std::array<Image::Pixel, 25> cinput;
     int fitness = 0;
@@ -126,6 +127,7 @@ void MedianFilterEvolution::createFilteredImage(std::string_view output_path)
         std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
         best_unit_.setInput(cinput);
         (*it) = best_unit_.getOutput();
+        win = noise_image_.getNextWindow();
     }
 
     output_image_.matrixToBMP(output_path);
