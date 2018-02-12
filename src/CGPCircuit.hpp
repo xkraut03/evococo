@@ -50,8 +50,9 @@ private:
 public:
     void initRandomly();
     void mutateRandomly();
-    void setInput(std::array<uint8_t, circuit_num_inputs>& input);
+    void setInput(const std::array<uint8_t, circuit_num_inputs>& input);
     uint8_t getOutput();
+    void printBackwards();
 
 private:
     uint8_t doSpecificOperation(const uint8_t x, const uint8_t y, const int function);

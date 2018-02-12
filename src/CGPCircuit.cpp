@@ -18,6 +18,7 @@
 //
 
 #include <cstdlib>
+#include <iostream>
 
 #include "../lib/effolkronium/random.hpp"
 
@@ -53,7 +54,7 @@ void CGPCircuit::initRandomly()
         }
     }
 
-    output_unit_ = circuit_num_inputs + Random::get(0, circuit_num_rows * circuit_num_columns - 1);
+    output_unit_ = Random::get(0, circuit_num_rows * circuit_num_columns - 1);
 }
 
 void CGPCircuit::mutateRandomly()
@@ -64,10 +65,10 @@ void CGPCircuit::mutateRandomly()
     int target_unit = Random::get(0, num_units);
     if (target_unit >= num_units) // change output
     {
-        // we don't allow output to be connected directly to eny of the inputs
+        // we don't allow output to be connected directly to any of the inputs
         // this can be changed in the future, but because this is mainly used for
         // filter with only one output, this seems unnecessary
-        output_unit_ = Random::get(0, num_units + circuit_num_inputs - 1);
+        output_unit_ = Random::get(0, num_units - 1);
     }
     else
     {
@@ -91,7 +92,16 @@ void CGPCircuit::mutateRandomly()
     }
 }
 
-void CGPCircuit::setInput(std::array<uint8_t, circuit_num_inputs>& input)
+void CGPCircuit::printBackwards()
+{
+    std::cout << output_unit_ << "\n";
+    if (output_unit_ >= circuit_num_inputs)
+    {
+
+    }
+}
+
+void CGPCircuit::setInput(const std::array<uint8_t, circuit_num_inputs>& input)
 {
     input_ = input;
 }
@@ -99,12 +109,8 @@ void CGPCircuit::setInput(std::array<uint8_t, circuit_num_inputs>& input)
 uint8_t CGPCircuit::getOutput()
 {
     for (int col = 0; col < circuit_num_columns; ++col)
-    {
         for (int row = 0; row < circuit_num_rows; ++row)
-        {
             circuit_matrix_[row][col].output = getComponentOutput(circuit_matrix_[row][col]);
-        }
-    }
 
     const int out_row = indexToRow(output_unit_);
     const int out_col = indexToColumn(output_unit_);
@@ -116,24 +122,26 @@ uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
     uint8_t x, y;
     if (unit.input1 < circuit_num_inputs)
     {
-        x = input_[unit.input1];
+        x = input_.at(unit.input1);
     }
     else
     {
-        const int row = indexToRow(unit.input1 + circuit_num_inputs);
-        const int col = indexToColumn(unit.input1 + circuit_num_inputs);
-        x = circuit_matrix_[row][col].output;
+        const int row = indexToRow(unit.input1 - circuit_num_inputs);
+        const int col = indexToColumn(unit.input1 - circuit_num_inputs);
+        // x = circuit_matrix_[row][col].output;
+        x = circuit_matrix_.at(row).at(col).output;
     }
 
     if (unit.input2 < circuit_num_inputs)
     {
-        y = input_[unit.input2];
+        y = input_.at(unit.input2);
     }
     else
     {
-        const int row = indexToRow(unit.input2 + circuit_num_inputs);
-        const int col = indexToColumn(unit.input2 + circuit_num_inputs);
-        y = circuit_matrix_[row][col].output;
+        const int row = indexToRow(unit.input2 - circuit_num_inputs);
+        const int col = indexToColumn(unit.input2 - circuit_num_inputs);
+        // y = circuit_matrix_[row][col].output;
+        y = circuit_matrix_.at(row).at(col).output;
     }
 
     return doSpecificOperation(x, y, unit.function_num);
