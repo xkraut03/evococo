@@ -35,7 +35,7 @@ void MedianFilterEvolution::evolve()
     generateRandomPopulation(population);
     Individual best_unit = selectBestUnit(population);
 
-    for (int cycle = 1; cycle < num_generations; ++cycle)
+    for (int cycle = 1; cycle <= num_generations; ++cycle)
     {
         std::cout << cycle << "th cycle, best population = " << getFitness(best_unit) << '\n';
         generatePopulationFromParent(best_unit, population);

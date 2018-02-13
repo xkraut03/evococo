@@ -26,7 +26,7 @@
 
 // evolutionary algorithm parameters
 const int population_size = 20;
-const int num_generations = 20;
+const int num_generations = 100;
 
 class MedianFilterEvolution
 {
