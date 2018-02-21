@@ -22,7 +22,7 @@ Credits to Prof. Ing. Lukáš Sekanina, Ph.D., who is the guarantee and the lect
 - [x] Come up with a name
 - [x] Working evolution-found filter
 - [ ] 1st prototype of working solution (**configurable** filter)
-- [ ] Speed up the dumb = slow prototype
+- [ ] Speed up the dumb=slow prototype
 - [ ] Create UI for visualisation of both process and result
 
 ### License
