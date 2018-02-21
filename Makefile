@@ -7,12 +7,12 @@ CXXFLAGS = -g -std=c++1z -O3 -pedantic -Wall -Werror -c
 LIBS_FOLDER = lib
 # LD = g++
 LD = clang++
-LDFLAGS = -g
+LDFLAGS = -g # /usr/lib64/libprofiler.so.0.4.16
 
 OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o Image.o
 
 all: $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
+	$(LD) $(OBJS) $(LDFLAGS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
 
 $(LIBS_FOLDER)/libEasyBMP.a: $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp $(LIBS_FOLDER)/EasyBMP/EasyBMP.h
 	$(CXX) -g -std=c++1z -O3 -pedantic -c $(LIBS_FOLDER)/EasyBMP/EasyBMP.cpp -o EasyBMP.o; \
@@ -49,4 +49,4 @@ run: all
 	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
 
 profile: all
-	cd $(BUILD_FOLDER) && valgrind --tool=callgrind ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
+	cd $(BUILD_FOLDER) && CPUPROFILE=prof.out ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
