@@ -47,3 +47,6 @@ clean:
 
 run: all
 	cd $(BUILD_FOLDER) && ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
+
+profile: all
+	cd $(BUILD_FOLDER) && valgrind --tool=callgrind ./$(PROJECT_NAME) ../images/barbara.bmp ../images/barbara_noise.bmp
