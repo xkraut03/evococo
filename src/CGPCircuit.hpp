@@ -26,8 +26,8 @@ const int circuit_num_rows = 6;
 const int circuit_num_columns = 10;
 // const int circuit_lback_value = 1; lback is max for now
 const int circuit_num_inputs = 25;
-const int circtuit_num_outputs = 1;
-const int circtuit_num_functions = 16;
+const int circuit_num_outputs = 1;
+const int circuit_num_functions = 16;
 
 struct CGPComponent
 {
@@ -53,6 +53,8 @@ public:
     void setInput(const std::array<uint8_t, circuit_num_inputs>& input);
     uint8_t getOutput();
     void printBackwards();
+    void saveToFile(std::string_view);
+    void loadFromFile(std::string_view);
 
 private:
     uint8_t doSpecificOperation(const uint8_t x, const uint8_t y, const int function);
