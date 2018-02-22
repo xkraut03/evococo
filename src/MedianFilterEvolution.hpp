@@ -47,5 +47,6 @@ private:
     void generateRandomPopulation(Population& population);
     Individual selectBestUnit(Population& population);
     void generatePopulationFromParent(Individual parent, Population& population);
-    int getFitness(Individual& unit);
+    double getFitness(Individual& unit);
+    double best_fitness_;
 };
