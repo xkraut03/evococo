@@ -48,5 +48,4 @@ private:
     Individual selectBestUnit(Population& population);
     void generatePopulationFromParent(Individual parent, Population& population);
     double getFitness(Individual& unit);
-    double best_fitness_;
 };

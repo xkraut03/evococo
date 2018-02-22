@@ -28,21 +28,7 @@
 
 MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path)
 : original_image_ {original_image_path}, noise_image_ {noise_image_path}, output_image_ {original_image_path}
-{
-    long fitness = 0;
-    for (int r = 0; r < original_image_.getHeight(); ++r)
-    {
-        for (int c = 0; c < original_image_.getWidth(); ++c)
-        {
-            long difference = original_image_(r,c) - noise_image_(r,c);
-            fitness += difference * difference;
-        }
-    }
-    long MN = original_image_.getWidth() * original_image_.getHeight();
-    double PSNR = 10 * std::log10(65025 / ((1.0 / MN) * fitness));
-    std::cout << "original PSNR: " << PSNR << '\n';
-    best_fitness_ = 0;
-}
+{}
 
 void MedianFilterEvolution::evolve()
 {
@@ -59,6 +45,7 @@ void MedianFilterEvolution::evolve()
 
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
+    best_unit_.saveToFile("circuit.cgp");
 }
 
 void MedianFilterEvolution::generateRandomPopulation(Population& population)
@@ -105,6 +92,13 @@ void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Popu
     }
 }
 
+double PSNR(long dif_sq, long width, long height)
+{
+    const long pixel_max = 255 * 255;
+    const long dimensions = width * height;
+    return 10 * std::log10(pixel_max / ((1.0 / dimensions) * dif_sq));
+}
+
 double MedianFilterEvolution::getFitness(Individual& unit)
 {
     noise_image_.resetWindow();
@@ -128,11 +122,7 @@ double MedianFilterEvolution::getFitness(Individual& unit)
         win = noise_image_.getNextWindow();
     }
 
-    long MN = original_image_.getWidth() * original_image_.getHeight();
-    assert(MN > 0);
-    assert(fitness > 0);
-    double PSNR = 10 * std::log10(65025 / ((1.0 / MN) * fitness));
-    return PSNR;
+    return PSNR(fitness, original_image_.getWidth(), original_image_.getHeight());
 }
 
 void MedianFilterEvolution::createFilteredImage(std::string_view output_path)
