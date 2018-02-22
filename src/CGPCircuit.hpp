@@ -37,12 +37,12 @@ struct CGPComponent
     uint8_t output;
 };
 
-template <const size_t MatrixRows, const size_t MatrixColumns>
-using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
 
 class CGPCircuit
 {
 private:
+    template <const size_t MatrixRows, const size_t MatrixColumns>
+    using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
     std::array<uint8_t, circuit_num_inputs> input_;
