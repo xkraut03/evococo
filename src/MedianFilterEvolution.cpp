@@ -69,11 +69,12 @@ void MedianFilterEvolution::generateRandomPopulation(Population& population)
 
 MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Population& population)
 {
-    int best_fitness = std::numeric_limits<int>::max();
+    double best_fitness = 0.0;
     int best_index = 0;
     for (int i = 0; i < population_size; ++i)
     {
-        if (int fitness = getFitness(population[i]) <= best_fitness)
+        if (double fitness = getFitness(population[i]);
+            fitness >= best_fitness)
         {
             best_fitness = fitness;
             best_index = i;
