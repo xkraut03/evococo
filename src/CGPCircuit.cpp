@@ -19,6 +19,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <fstream>
+#include <cassert>
 
 #include "../lib/effolkronium/random.hpp"
 
@@ -48,7 +50,7 @@ void CGPCircuit::initRandomly()
             random = Random::get(0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
             unit.input2 = random;
 
-            random = Random::get(0, circtuit_num_functions - 1);
+            random = Random::get(0, circuit_num_functions - 1);
             unit.function_num = random;
             ++column_offset;
         }
@@ -86,7 +88,7 @@ void CGPCircuit::mutateRandomly()
                     Random::get(0, circuit_num_inputs + (col * circuit_num_rows) - 1);
             break;
             case 2: // change function
-                circuit_matrix_[row][col].function_num = Random::get(0, circtuit_num_functions - 1);
+                circuit_matrix_[row][col].function_num = Random::get(0, circuit_num_functions - 1);
             break;
         }
     }
@@ -140,6 +142,7 @@ uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
     {
         const int row = indexToRow(unit.input2 - circuit_num_inputs);
         const int col = indexToColumn(unit.input2 - circuit_num_inputs);
+        assert(row <= circuit_num_rows and col <= circuit_num_columns);
         // y = circuit_matrix_[row][col].output;
         y = circuit_matrix_.at(row).at(col).output;
     }
@@ -203,4 +206,34 @@ uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y, const 
     }
 
     return result;
+}
+
+void CGPCircuit::saveToFile(std::string_view path_view)
+{
+    std::ofstream out_file{path_view.data()};
+    out_file << circuit_num_rows << " " << circuit_num_columns << " " << circuit_num_inputs << '\n';
+    for (auto row : circuit_matrix_)
+        for (auto unit : row)
+            out_file << unit.input1 << " " << unit.input2 << " " << unit.function_num << '\n';
+
+    out_file << output_unit_ << '\n';
+}
+
+void CGPCircuit::loadFromFile(std::string_view path_view)
+{
+    std::ifstream in_file { path_view.data() };
+    int width, height;
+    in_file >> height >> width;
+    std::cout << height << " " << width << '\n';
+    for (int r = 0; r < circuit_num_rows; ++r)
+    {
+        for (int c = 0; c < circuit_num_columns; ++c)
+        {
+            in_file >> circuit_matrix_[r][c].input1;
+            in_file >> circuit_matrix_[r][c].input2;
+            in_file >> circuit_matrix_[r][c].function_num;
+        }
+    }
+
+    in_file >> output_unit_;
 }
