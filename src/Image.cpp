@@ -59,8 +59,8 @@ void Image::fillImageFromBMP()
         pixel_matrix_.push_back(tmp_row);
     }
 
-    if (bmp_image_.TellHeight() != pixel_matrix_.size())
-        throw std::runtime_error("image height missmatch!\n");
+    // if (bmp_image_.TellHeight() != pixel_matrix_.size())
+        // throw std::runtime_error("image height missmatch!\n");
 }
 
 void sidesPadding(std::vector<Image::Pixel>& row)
@@ -201,7 +201,15 @@ void Image::resetWindow()
     }
 }
 
+int Image::getWidth() const
+{
+    return width_;
+}
 
+int Image::getHeight() const
+{
+    return height_;
+}
 
 
 

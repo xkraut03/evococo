@@ -43,6 +43,8 @@ public:
     bool isWindowValid();
     void printMatrix();
     void matrixToBMP(std::string_view path);
+    int getWidth() const;
+    int getHeight() const;
 
 private:
     void fillImageFromBMP();
