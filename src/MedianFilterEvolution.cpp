@@ -33,8 +33,11 @@ MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_pat
 void MedianFilterEvolution::evolve()
 {
     Population population;
+    Individual best_unit;
     generateRandomPopulation(population);
-    Individual best_unit = selectBestUnit(population);
+    best_unit  = selectBestUnit(population);
+
+    std::cout << "0th best population = \n" << getFitness(best_unit) << '\n';
 
     for (int cycle = 1; cycle <= num_generations; ++cycle)
     {
@@ -87,8 +90,6 @@ void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Popu
         individual.mutateRandomly();
         individual.mutateRandomly();
         individual.mutateRandomly();
-        individual.mutateRandomly();
-        individual.mutateRandomly();
     }
 }
 
@@ -105,6 +106,29 @@ double MedianFilterEvolution::getFitness(Individual& unit)
     Image::Window win = noise_image_.getNextWindow();
     std::array<Image::Pixel, 25> cinput;
     long fitness = 0;
+    for (auto pix : original_image_)
+    {
+        std::copy(win[0].begin(), win[0].end(), cinput.begin());
+        std::copy(win[1].begin(), win[1].end(), cinput.begin() + 5);
+        std::copy(win[2].begin(), win[2].end(), cinput.begin() + 10);
+        std::copy(win[3].begin(), win[3].end(), cinput.begin() + 15);
+        std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
+        unit.setInput(cinput);
+        Image::Pixel new_pix = unit.getOutput();
+        long difference = pix - new_pix;
+        fitness += difference * difference;
+        win = noise_image_.getNextWindow();
+    }
+
+    return PSNR(fitness, original_image_.getWidth(), original_image_.getHeight());
+}
+
+long MedianFilterEvolution::oldFitness(Individual &unit)
+{
+    noise_image_.resetWindow();
+    Image::Window win = noise_image_.getNextWindow();
+    std::array<Image::Pixel, 25> cinput;
+    long fitness = 0;
 
     for (auto pix : original_image_)
     {
@@ -115,14 +139,12 @@ double MedianFilterEvolution::getFitness(Individual& unit)
         std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
         unit.setInput(cinput);
 
-        auto new_pix = unit.getOutput();
-        // fitness += (pix >= new_pix) ? (pix - new_pix) : (new_pix - pix);
-        long difference = pix - new_pix;
-        fitness += difference * difference;
+        Image::Pixel new_pix = unit.getOutput();
+        fitness += (pix >= new_pix) ? (pix - new_pix) : (new_pix - pix);
         win = noise_image_.getNextWindow();
     }
 
-    return PSNR(fitness, original_image_.getWidth(), original_image_.getHeight());
+    return fitness;
 }
 
 void MedianFilterEvolution::createFilteredImage(std::string_view output_path)
