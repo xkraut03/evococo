@@ -22,8 +22,8 @@
 #include <array>
 
 // CGP parameters
-const int circuit_num_rows = 6;
-const int circuit_num_columns = 10;
+const int circuit_num_rows = 7;
+const int circuit_num_columns = 15;
 // const int circuit_lback_value = 1; lback is max for now
 const int circuit_num_inputs = 25;
 const int circuit_num_outputs = 1;
@@ -33,7 +33,7 @@ struct CGPComponent
 {
     int input1;
     int input2;
-    int function_num;
+    int function;
     uint8_t output;
 };
 
@@ -52,11 +52,12 @@ public:
     void mutateRandomly();
     void setInput(const std::array<uint8_t, circuit_num_inputs>& input);
     uint8_t getOutput();
+    bool saveToFile(std::string_view);
+    bool loadFromFile(std::string_view);
     void printBackwards();
-    void saveToFile(std::string_view);
-    void loadFromFile(std::string_view);
 
 private:
+    void printBackwards(int);
     uint8_t doSpecificOperation(const uint8_t x, const uint8_t y, const int function);
     uint8_t getComponentOutput(const CGPComponent& unit);
     int indexToRow(const int index);
