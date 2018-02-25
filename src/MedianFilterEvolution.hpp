@@ -25,8 +25,8 @@
 #include "CGPCircuit.hpp"
 
 // evolutionary algorithm parameters
-const int population_size = 20;
-const int num_generations = 100;
+const int population_size = 30;
+const int num_generations = 200;
 
 class MedianFilterEvolution
 {
