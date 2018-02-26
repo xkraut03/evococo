@@ -99,6 +99,15 @@ double PSNR(long dif_sq, long width, long height)
     return 10 * std::log10(pixel_max / ((1.0 / dimensions) * dif_sq));
 }
 
+void copy(Image::Window& from, CGPCircuit::CGPInputArray& to)
+{
+    std::copy(from[0].begin(), from[0].end(), to.begin());
+    std::copy(from[1].begin(), from[1].end(), to.begin() + 5);
+    std::copy(from[2].begin(), from[2].end(), to.begin() + 10);
+    std::copy(from[3].begin(), from[3].end(), to.begin() + 15);
+    std::copy(from[4].begin(), from[4].end(), to.begin() + 20);
+}
+
 double MedianFilterEvolution::getFitness(Individual& unit)
 {
     noise_image_.resetWindow();
@@ -107,11 +116,7 @@ double MedianFilterEvolution::getFitness(Individual& unit)
     long fitness = 0;
     for (auto pix : original_image_)
     {
-        std::copy(win[0].begin(), win[0].end(), cinput.begin());
-        std::copy(win[1].begin(), win[1].end(), cinput.begin() + 5);
-        std::copy(win[2].begin(), win[2].end(), cinput.begin() + 10);
-        std::copy(win[3].begin(), win[3].end(), cinput.begin() + 15);
-        std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
+        copy(win, cinput);
         unit.setInput(cinput);
         Image::Pixel new_pix = unit.getOutput();
         long difference = pix - new_pix;
@@ -131,11 +136,7 @@ long MedianFilterEvolution::oldFitness(Individual &unit)
 
     for (auto pix : original_image_)
     {
-        std::copy(win[0].begin(), win[0].end(), cinput.begin());
-        std::copy(win[1].begin(), win[1].end(), cinput.begin() + 5);
-        std::copy(win[2].begin(), win[2].end(), cinput.begin() + 10);
-        std::copy(win[3].begin(), win[3].end(), cinput.begin() + 15);
-        std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
+        copy(win, cinput);
         unit.setInput(cinput);
 
         Image::Pixel new_pix = unit.getOutput();
@@ -154,11 +155,7 @@ void MedianFilterEvolution::createFilteredImage(std::string_view output_path)
 
     for (auto it = output_image_.begin(); it != output_image_.end(); ++it)
     {
-        std::copy(win[0].begin(), win[0].end(), cinput.begin());
-        std::copy(win[1].begin(), win[1].end(), cinput.begin() + 5);
-        std::copy(win[2].begin(), win[2].end(), cinput.begin() + 10);
-        std::copy(win[3].begin(), win[3].end(), cinput.begin() + 15);
-        std::copy(win[4].begin(), win[4].end(), cinput.begin() + 20);
+        copy(win, cinput);
         best_unit_.setInput(cinput);
         (*it) = best_unit_.getOutput();
         win = noise_image_.getNextWindow();
