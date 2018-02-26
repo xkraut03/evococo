@@ -32,17 +32,13 @@ MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_pat
 
 void MedianFilterEvolution::evolve()
 {
-    Population population;
-    Individual best_unit;
-    generateRandomPopulation(population);
-    best_unit  = selectBestUnit(population);
-
-    std::cout << "0th best population = \n" << getFitness(best_unit) << '\n';
+    Population population = generateRandomPopulation();
+    Individual best_unit = selectBestUnit(population);
 
     for (int cycle = 1; cycle <= num_generations; ++cycle)
     {
         std::cout << cycle << "th cycle, best population = " << getFitness(best_unit) << '\n';
-        generatePopulationFromParent(best_unit, population);
+        mutatePopulationFromParent(population, best_unit);
         best_unit = selectBestUnit(population);
     }
 
@@ -51,10 +47,13 @@ void MedianFilterEvolution::evolve()
     best_unit_.saveToFile("circuit.cgp");
 }
 
-void MedianFilterEvolution::generateRandomPopulation(Population& population)
+MedianFilterEvolution::Population MedianFilterEvolution::generateRandomPopulation()
 {
+    Population population;
     for (auto& p : population)
         p.initRandomly();
+
+    return population;
 }
 
 MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Population& population)
@@ -74,7 +73,7 @@ MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Populati
     return population[best_index];
 }
 
-void MedianFilterEvolution::generatePopulationFromParent(Individual parent, Population& population)
+void MedianFilterEvolution::mutatePopulationFromParent(Population& population, Individual parent)
 {
     population[0] = parent;
     bool skip_first = true;

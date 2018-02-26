@@ -44,9 +44,9 @@ private:
     Individual best_unit_;
 
 private:
-    void generateRandomPopulation(Population& population);
+    Population generateRandomPopulation();
     Individual selectBestUnit(Population& population);
-    void generatePopulationFromParent(Individual parent, Population& population);
+    void mutatePopulationFromParent(Population& population, Individual parent);
     double getFitness(Individual& unit);
     long oldFitness(Individual &unit);
 };
