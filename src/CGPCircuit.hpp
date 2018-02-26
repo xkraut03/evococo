@@ -48,9 +48,10 @@ private:
     std::array<uint8_t, circuit_num_inputs> input_;
 
 public:
+    using CGPInputArray = std::array<uint8_t, circuit_num_inputs>;
     void initRandomly();
     void mutateRandomly();
-    void setInput(const std::array<uint8_t, circuit_num_inputs>& input);
+    void setInput(const CGPInputArray& input);
     uint8_t getOutput();
     bool saveToFile(std::string_view);
     bool loadFromFile(std::string_view);

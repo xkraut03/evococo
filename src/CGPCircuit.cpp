@@ -86,7 +86,7 @@ void CGPCircuit::mutateRandomly()
     }
 }
 
-void CGPCircuit::setInput(const std::array<uint8_t, circuit_num_inputs>& input)
+void CGPCircuit::setInput(const CGPCircuit::CGPInputArray& input)
 {
     input_ = input;
 }
