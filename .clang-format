@@ -63,36 +63,39 @@ IncludeCategories:
     Priority:        3
 
 # IncludeIsMainRegex: '([-_](test|unittest))?$'
-# IndentCaseLabels: true
-# IndentWidth:     2
-# IndentWrappedFunctionNames: false
-# KeepEmptyLinesAtTheStartOfBlocks: false
+
+IndentCaseLabels: true
+IndentWidth: 4
+IndentWrappedFunctionNames: false
+KeepEmptyLinesAtTheStartOfBlocks: false
+
 # MacroBlockBegin: ''
 # MacroBlockEnd:   ''
-# MaxEmptyLinesToKeep: 1
-# NamespaceIndentation: None
-# PenaltyBreakAssignment: 2
-# PenaltyBreakBeforeFirstCallParameter: 1
-# PenaltyBreakComment: 300
-# PenaltyBreakFirstLessLess: 120
-# PenaltyBreakString: 1000
-# PenaltyExcessCharacter: 1000000
-# PenaltyReturnTypeOnItsOwnLine: 200
+
+MaxEmptyLinesToKeep: 1
+NamespaceIndentation: None
+PenaltyBreakAssignment: 2
+PenaltyBreakBeforeFirstCallParameter: 1
+PenaltyBreakComment: 300
+PenaltyBreakFirstLessLess: 120
+PenaltyBreakString: 1000
+PenaltyExcessCharacter: 1000000
+PenaltyReturnTypeOnItsOwnLine: 200
 PointerAlignment: Left
-# ReflowComments:  true
-# SortIncludes:    true
-# SortUsingDeclarations: true
-# SpaceAfterCStyleCast: false
-# SpaceAfterTemplateKeyword: true
-# SpaceBeforeAssignmentOperators: true
-# SpaceBeforeParens: ControlStatements
-# SpaceInEmptyParentheses: false
-# SpacesBeforeTrailingComments: 2
-# SpacesInAngles:  false
-# SpacesInContainerLiterals: true
-# SpacesInCStyleCastParentheses: false
-# SpacesInParentheses: false
-# SpacesInSquareBrackets: false
-# Standard:        Auto
-# TabWidth:        8
+ReflowComments: true
+SortIncludes: true
+SortUsingDeclarations: true
+SpaceAfterCStyleCast: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 2
+SpacesInAngles: false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+Standard: Auto
+# TabWidth: 8
 # UseTab:          Never
