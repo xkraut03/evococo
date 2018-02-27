@@ -17,11 +17,11 @@
 // limitations under the License.
 //
 
+#include "MedianFilterEvolution.hpp"
+
 #include <limits>
 #include <typeinfo>
 #include <cassert>
-
-#include "MedianFilterEvolution.hpp"
 
 #include "Image.hpp"
 #include "CGPCircuit.hpp"

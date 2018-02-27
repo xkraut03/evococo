@@ -17,6 +17,8 @@
 // limitations under the License.
 //
 
+#include "CGPCircuit.hpp"
+
 #include <cstdlib>
 #include <iostream>
 #include <fstream>
@@ -24,7 +26,6 @@
 
 #include "../lib/effolkronium/random.hpp"
 
-#include "CGPCircuit.hpp"
 
 int CGPCircuit::indexToColumn(const int index)
 {
