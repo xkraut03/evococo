@@ -19,23 +19,19 @@
 
 #include "CGPCircuit.hpp"
 
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
 #include <cassert>
+#include <cstdlib>
+#include <fstream>
+#include <iostream>
 
 #include "../lib/effolkronium/random.hpp"
-
 
 int CGPCircuit::indexToColumn(const int index)
 {
     return index / circuit_num_rows;
 }
 
-int CGPCircuit::indexToRow(const int index)
-{
-    return index % circuit_num_rows;
-}
+int CGPCircuit::indexToRow(const int index) { return index % circuit_num_rows; }
 
 void CGPCircuit::initRandomly()
 {
@@ -45,8 +41,10 @@ void CGPCircuit::initRandomly()
         int column_offset = 0;
         for (auto& unit : row)
         {
-            unit.input1 = Random::get(0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
-            unit.input2 = Random::get(0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
+            unit.input1 = Random::get(
+                0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
+            unit.input2 = Random::get(
+                0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
             unit.function = Random::get(0, circuit_num_functions - 1);
             ++column_offset;
         }
@@ -61,7 +59,7 @@ void CGPCircuit::mutateRandomly()
 
     int num_units = circuit_num_rows * circuit_num_columns;
     int target_unit = Random::get(0, num_units);
-    if (target_unit >= num_units) // change output
+    if (target_unit >= num_units)  // change output
     {
         output_unit_ = Random::get(0, num_units - 1);
     }
@@ -69,20 +67,21 @@ void CGPCircuit::mutateRandomly()
     {
         int row = indexToRow(target_unit);
         int col = indexToColumn(target_unit);
-        int action = Random::get({1, 2, 3});
+        int action = Random::get({ 1, 2, 3 });
         switch (action)
         {
-            case 0: // change input 1
-                circuit_matrix_[row][col].input1 =
-                    Random::get(0, circuit_num_inputs + (col * circuit_num_rows) - 1);
-            break;
-            case 1: // change input 2
-                circuit_matrix_[row][col].input2 =
-                    Random::get(0, circuit_num_inputs + (col * circuit_num_rows) - 1);
-            break;
-            case 2: // change function
-                circuit_matrix_[row][col].function = Random::get(0, circuit_num_functions - 1);
-            break;
+            case 0:  // change input 1
+                circuit_matrix_[row][col].input1 = Random::get(
+                    0, circuit_num_inputs + (col * circuit_num_rows) - 1);
+                break;
+            case 1:  // change input 2
+                circuit_matrix_[row][col].input2 = Random::get(
+                    0, circuit_num_inputs + (col * circuit_num_rows) - 1);
+                break;
+            case 2:  // change function
+                circuit_matrix_[row][col].function =
+                    Random::get(0, circuit_num_functions - 1);
+                break;
         }
     }
 }
@@ -127,59 +126,60 @@ uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
     return doSpecificOperation(x, y, unit.function);
 }
 
-uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y, const int function)
+uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y,
+                                        const int function)
 {
     uint8_t result = 0;
     switch (function)
     {
         case 0:
             result = 255;
-        break;
+            break;
         case 1:
             result = x;
-        break;
+            break;
         case 2:
             result = 255 - x;
-        break;
+            break;
         case 3:
             result = x | y;
-        break;
+            break;
         case 4:
             result = (255 - x) | y;
-        break;
+            break;
         case 5:
             result = x & y;
-        break;
+            break;
         case 6:
             result = 255 - (x & y);
-        break;
+            break;
         case 7:
             result = x ^ y;
-        break;
+            break;
         case 8:
             result = x >> 1;
-        break;
+            break;
         case 9:
             result = x >> 2;
-        break;
+            break;
         case 10:
             result = (x << 4) | (y >> 4);
-        break;
+            break;
         case 11:
             result = (x + y);
-        break;
+            break;
         case 12:
             result = ((int)x + (int)y) > 255 ? 255 : x + y;
-        break;
+            break;
         case 13:
             result = (x + y) >> 1;
-        break;
+            break;
         case 14:
             result = (x > y) ? x : y;
-        break;
+            break;
         case 15:
             result = (x < y) ? x : y;
-        break;
+            break;
     }
 
     return result;
@@ -187,14 +187,14 @@ uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y, const 
 
 bool CGPCircuit::saveToFile(std::string_view path_view)
 {
-    std::ofstream out_file { path_view.data() };
-    if (!out_file.is_open())
-        return false;
+    std::ofstream out_file{ path_view.data() };
+    if (!out_file.is_open()) return false;
 
     out_file << circuit_num_rows << " " << circuit_num_columns;
     for (auto row : circuit_matrix_)
         for (auto unit : row)
-            out_file << unit.input1 << " " << unit.input2 << " " << unit.function << '\n';
+            out_file << unit.input1 << " " << unit.input2 << " "
+                     << unit.function << '\n';
 
     out_file << output_unit_ << '\n';
     return true;
@@ -205,23 +205,24 @@ void CGPCircuit::printBackwards()
     std::cout << output_unit_ << '\n';
     int row = indexToRow(output_unit_);
     int col = indexToColumn(output_unit_);
-    std::cout << circuit_matrix_[row][col].input1 << ' ' <<
-            circuit_matrix_[row][col].input2 << ' ' <<
-            circuit_matrix_[row][col].function << '\n';
+    std::cout << circuit_matrix_[row][col].input1 << ' '
+              << circuit_matrix_[row][col].input2 << ' '
+              << circuit_matrix_[row][col].function << '\n';
     printBackwards(circuit_matrix_[row][col].input1);
     printBackwards(circuit_matrix_[row][col].input2);
 }
 
 void CGPCircuit::printBackwards(int unit_index)
 {
-    if (unit_index < 25) return;
+    if (unit_index < 25)
+        return;
     else
         unit_index -= 25;
     int row = indexToRow(unit_index);
     int col = indexToColumn(unit_index);
-        std::cout << circuit_matrix_[row][col].input1 << ' ' <<
-            circuit_matrix_[row][col].input2 << ' ' <<
-            circuit_matrix_[row][col].function << '\n';
+    std::cout << circuit_matrix_[row][col].input1 << ' '
+              << circuit_matrix_[row][col].input2 << ' '
+              << circuit_matrix_[row][col].function << '\n';
 
     printBackwards(circuit_matrix_[row][col].input1);
     printBackwards(circuit_matrix_[row][col].input2);
@@ -229,9 +230,8 @@ void CGPCircuit::printBackwards(int unit_index)
 
 bool CGPCircuit::loadFromFile(std::string_view path_view)
 {
-    std::ifstream in_file { path_view.data() };
-    if (!in_file.is_open())
-        return false;
+    std::ifstream in_file{ path_view.data() };
+    if (!in_file.is_open()) return false;
 
     int width, height;
     in_file >> height >> width;

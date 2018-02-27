@@ -19,15 +19,18 @@
 
 #include "MedianFilterEvolution.hpp"
 
+#include <cassert>
 #include <limits>
 #include <typeinfo>
-#include <cassert>
 
-#include "Image.hpp"
 #include "CGPCircuit.hpp"
+#include "Image.hpp"
 
-MedianFilterEvolution::MedianFilterEvolution(std::string_view original_image_path, std::string_view noise_image_path)
-: original_image_ {original_image_path}, noise_image_ {noise_image_path}, output_image_ {original_image_path}
+MedianFilterEvolution::MedianFilterEvolution(
+    std::string_view original_image_path, std::string_view noise_image_path)
+    : original_image_{ original_image_path }
+    , noise_image_{ noise_image_path }
+    , output_image_{ original_image_path }
 {}
 
 void MedianFilterEvolution::evolve()
@@ -37,7 +40,9 @@ void MedianFilterEvolution::evolve()
 
     for (int cycle = 1; cycle <= num_generations; ++cycle)
     {
-        std::cout << cycle << "th cycle, best population = " << getFitness(best_unit) << '\n';
+        std::cout << cycle
+                  << "th cycle, best population = " << getFitness(best_unit)
+                  << '\n';
         mutatePopulationFromParent(population, best_unit);
         best_unit = selectBestUnit(population);
     }
@@ -47,23 +52,23 @@ void MedianFilterEvolution::evolve()
     best_unit_.saveToFile("circuit.cgp");
 }
 
-MedianFilterEvolution::Population MedianFilterEvolution::generateRandomPopulation()
+MedianFilterEvolution::Population
+MedianFilterEvolution::generateRandomPopulation()
 {
     Population population;
-    for (auto& p : population)
-        p.initRandomly();
+    for (auto& p : population) p.initRandomly();
 
     return population;
 }
 
-MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Population& population)
+MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(
+    Population& population)
 {
     double best_fitness = 0.0;
     int best_index = 0;
     for (int i = 0; i < population_size; ++i)
     {
-        if (double fitness = getFitness(population[i]);
-            fitness >= best_fitness)
+        if (double fitness = getFitness(population[i]); fitness >= best_fitness)
         {
             best_fitness = fitness;
             best_index = i;
@@ -73,7 +78,8 @@ MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(Populati
     return population[best_index];
 }
 
-void MedianFilterEvolution::mutatePopulationFromParent(Population& population, Individual parent)
+void MedianFilterEvolution::mutatePopulationFromParent(Population& population,
+                                                       Individual parent)
 {
     population[0] = parent;
     bool skip_first = true;
@@ -124,10 +130,11 @@ double MedianFilterEvolution::getFitness(Individual& unit)
         win = noise_image_.getNextWindow();
     }
 
-    return PSNR(sum_of_differences, original_image_.getWidth(), original_image_.getHeight());
+    return PSNR(sum_of_differences, original_image_.getWidth(),
+                original_image_.getHeight());
 }
 
-long MedianFilterEvolution::oldFitness(Individual &unit)
+long MedianFilterEvolution::oldFitness(Individual& unit)
 {
     noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();

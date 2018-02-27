@@ -37,12 +37,12 @@ struct CGPComponent
     uint8_t output;
 };
 
-
 class CGPCircuit
 {
 private:
-    template <const size_t MatrixRows, const size_t MatrixColumns>
-    using ComponentsMatrix = std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
+    template<const size_t MatrixRows, const size_t MatrixColumns>
+    using ComponentsMatrix =
+        std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
     std::array<uint8_t, circuit_num_inputs> input_;
@@ -59,7 +59,8 @@ public:
 
 private:
     void printBackwards(int);
-    uint8_t doSpecificOperation(const uint8_t x, const uint8_t y, const int function);
+    uint8_t doSpecificOperation(const uint8_t x, const uint8_t y,
+                                const int function);
     uint8_t getComponentOutput(const CGPComponent& unit);
     int indexToRow(const int index);
     int indexToColumn(const int index);

@@ -19,26 +19,26 @@
 
 #include "ComponentEvolver.hpp"
 
+#include <fstream>
+#include <memory>
 #include <string>
 #include <string_view>
-#include <memory>
-#include <fstream>
 
 #include "MedianFilterEvolution.hpp"
 
-void ComponentEvolver::addImages(std::string_view original_image_path, std::string_view noise_image_path)
+void ComponentEvolver::addImages(std::string_view original_image_path,
+                                 std::string_view noise_image_path)
 {
     original_image_path_ = original_image_path;
     noise_image_path_ = noise_image_path;
-    median_filter_evolver_ = std::make_unique<MedianFilterEvolution>(original_image_path, noise_image_path);
+    median_filter_evolver_ = std::make_unique<MedianFilterEvolution>(
+        original_image_path, noise_image_path);
 }
 
-void ComponentEvolver::evolve()
-{
-    median_filter_evolver_->evolve();
-}
+void ComponentEvolver::evolve() { median_filter_evolver_->evolve(); }
 
-void ComponentEvolver::filterOriginalImageToFile(std::string_view output_image_path)
+void ComponentEvolver::filterOriginalImageToFile(
+    std::string_view output_image_path)
 {
     median_filter_evolver_->createFilteredImage(output_image_path);
 }
