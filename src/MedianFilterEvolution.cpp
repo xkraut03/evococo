@@ -112,19 +112,19 @@ double MedianFilterEvolution::getFitness(Individual& unit)
 {
     noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();
-    std::array<Image::Pixel, 25> cinput;
-    long fitness = 0;
+    CGPCircuit::CGPInputArray cinput;
+    long sum_of_differences = 0;
     for (auto pix : original_image_)
     {
         copy(win, cinput);
         unit.setInput(cinput);
         Image::Pixel new_pix = unit.getOutput();
         long difference = pix - new_pix;
-        fitness += difference * difference;
+        sum_of_differences += difference * difference;
         win = noise_image_.getNextWindow();
     }
 
-    return PSNR(fitness, original_image_.getWidth(), original_image_.getHeight());
+    return PSNR(sum_of_differences, original_image_.getWidth(), original_image_.getHeight());
 }
 
 long MedianFilterEvolution::oldFitness(Individual &unit)
