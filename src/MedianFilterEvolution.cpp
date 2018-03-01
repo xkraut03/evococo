@@ -49,6 +49,7 @@ void MedianFilterEvolution::evolve()
 
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
+    best_unit.printBackwards();
     best_unit_.saveToFile("circuit.cgp");
 }
 

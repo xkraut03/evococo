@@ -22,8 +22,8 @@
 #include <array>
 
 // CGP parameters
-const int circuit_num_rows = 7;
-const int circuit_num_columns = 15;
+const int circuit_num_rows = 5;
+const int circuit_num_columns = 9;
 // const int circuit_lback_value = 1; lback is max for now
 const int circuit_num_inputs = 25;
 const int circuit_num_outputs = 1;
