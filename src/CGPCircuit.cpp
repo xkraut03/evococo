@@ -205,14 +205,10 @@ bool CGPCircuit::saveToFile(std::string_view path_view) const
 
 void CGPCircuit::printBackwards() const
 {
-    std::cout << output_unit_ << '\n';
-    int row = indexToRow(output_unit_);
-    int col = indexToColumn(output_unit_);
-    std::cout << circuit_matrix_[row][col].input1 << ' '
-              << circuit_matrix_[row][col].input2 << ' '
-              << circuit_matrix_[row][col].function << '\n';
-    printBackwards(circuit_matrix_[row][col].input1);
-    printBackwards(circuit_matrix_[row][col].input2);
+    if (output_unit_ < 25)
+        return;
+    else
+        printBackwards(output_unit_);
 }
 
 void CGPCircuit::printBackwards(int unit_index) const
