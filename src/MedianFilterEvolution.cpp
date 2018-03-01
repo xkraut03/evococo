@@ -42,7 +42,7 @@ void MedianFilterEvolution::evolve()
     {
         std::cout << cycle
                   << "th cycle, best population = " << getFitness(best_unit)
-                  << '\n';
+                  << " PNSR, " << oldFitness(best_unit) << " diference\n";
         mutatePopulationFromParent(population, best_unit);
         best_unit = selectBestUnit(population);
     }
