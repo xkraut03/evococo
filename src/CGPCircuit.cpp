@@ -26,12 +26,15 @@
 
 #include "../lib/effolkronium/random.hpp"
 
-int CGPCircuit::indexToColumn(const int index)
+int CGPCircuit::indexToColumn(const int index) const
 {
     return index / circuit_num_rows;
 }
 
-int CGPCircuit::indexToRow(const int index) { return index % circuit_num_rows; }
+int CGPCircuit::indexToRow(const int index) const
+{
+    return index % circuit_num_rows;
+}
 
 void CGPCircuit::initRandomly()
 {
@@ -98,7 +101,7 @@ uint8_t CGPCircuit::getOutput()
     return getComponentOutput(circuit_matrix_[row][col]);
 }
 
-uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
+uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit) const
 {
     uint8_t x, y;
     if (unit.input1 < circuit_num_inputs)
@@ -127,7 +130,7 @@ uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit)
 }
 
 uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y,
-                                        const int function)
+                                        const int function) const
 {
     uint8_t result = 0;
     switch (function)
@@ -185,7 +188,7 @@ uint8_t CGPCircuit::doSpecificOperation(const uint8_t x, const uint8_t y,
     return result;
 }
 
-bool CGPCircuit::saveToFile(std::string_view path_view)
+bool CGPCircuit::saveToFile(std::string_view path_view) const
 {
     std::ofstream out_file{ path_view.data() };
     if (!out_file.is_open()) return false;
@@ -200,7 +203,7 @@ bool CGPCircuit::saveToFile(std::string_view path_view)
     return true;
 }
 
-void CGPCircuit::printBackwards()
+void CGPCircuit::printBackwards() const
 {
     std::cout << output_unit_ << '\n';
     int row = indexToRow(output_unit_);
@@ -212,7 +215,7 @@ void CGPCircuit::printBackwards()
     printBackwards(circuit_matrix_[row][col].input2);
 }
 
-void CGPCircuit::printBackwards(int unit_index)
+void CGPCircuit::printBackwards(int unit_index) const
 {
     if (unit_index < 25)
         return;

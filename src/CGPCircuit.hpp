@@ -53,15 +53,15 @@ public:
     void mutateRandomly();
     void setInput(const CGPInputArray& input);
     uint8_t getOutput();
-    bool saveToFile(std::string_view);
+    bool saveToFile(std::string_view) const;
     bool loadFromFile(std::string_view);
-    void printBackwards();
+    void printBackwards() const;
 
 private:
-    void printBackwards(int);
+    void printBackwards(int) const;
     uint8_t doSpecificOperation(const uint8_t x, const uint8_t y,
-                                const int function);
-    uint8_t getComponentOutput(const CGPComponent& unit);
-    int indexToRow(const int index);
-    int indexToColumn(const int index);
+                                const int function) const;
+    uint8_t getComponentOutput(const CGPComponent& unit) const;
+    int indexToRow(const int index) const;
+    int indexToColumn(const int index) const;
 };
