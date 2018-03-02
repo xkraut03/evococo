@@ -44,7 +44,7 @@ ColumnLimit: 80
 CompactNamespaces: false
 ConstructorInitializerAllOnOneLineOrOnePerLine: true
 ConstructorInitializerIndentWidth: 4
-ContinuationIndentWidth: 4
+ContinuationIndentWidth: 2
 Cpp11BracedListStyle: false
 DerivePointerAlignment: true
 DisableFormat: false
@@ -65,7 +65,7 @@ IncludeCategories:
 # IncludeIsMainRegex: '([-_](test|unittest))?$'
 
 IndentCaseLabels: true
-IndentWidth: 4
+IndentWidth: 2
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 
