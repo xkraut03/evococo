@@ -58,10 +58,13 @@ public:
     void printBackwards() const;
 
 private:
+    int column_size = circuit_num_rows;
+    // int row_size = circuit_num_columns;
     void printBackwards(int) const;
     uint8_t doSpecificOperation(const uint8_t x, const uint8_t y,
                                 const int function) const;
     uint8_t getComponentOutput(const CGPComponent& unit) const;
     int indexToRow(const int index) const;
     int indexToColumn(const int index) const;
+    int setLback1(int target, int curr_column);
 };

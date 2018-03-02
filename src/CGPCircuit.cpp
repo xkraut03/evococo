@@ -36,6 +36,17 @@ int CGPCircuit::indexToRow(const int index) const
     return index % circuit_num_rows;
 }
 
+int CGPCircuit::setLback1(int target, int curr_column)
+{
+    if (target >= circuit_num_inputs)
+    {
+        int column_diff =
+          curr_column - indexToColumn(target - circuit_num_inputs);
+        if (column_diff > 1) return target + ((column_diff - 1) * column_size);
+    }
+    return target;
+}
+
 void CGPCircuit::initRandomly()
 {
     using Random = effolkronium::random_static;
@@ -44,10 +55,14 @@ void CGPCircuit::initRandomly()
         int column_offset = 0;
         for (auto& unit : row)
         {
-            unit.input1 = Random::get(
-                0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
-            unit.input2 = Random::get(
-                0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
+            int random_target = Random::get(
+              0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
+            unit.input1 = setLback1(random_target, column_offset);
+
+            random_target = Random::get(
+              0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
+            unit.input2 = setLback1(random_target, column_offset);
+
             unit.function = Random::get(0, circuit_num_functions - 1);
             ++column_offset;
         }
@@ -74,16 +89,20 @@ void CGPCircuit::mutateRandomly()
         switch (action)
         {
             case 0:  // change input 1
-                circuit_matrix_[row][col].input1 = Random::get(
-                    0, circuit_num_inputs + (col * circuit_num_rows) - 1);
+                circuit_matrix_[row][col].input1 =
+                  setLback1(Random::get(0, circuit_num_inputs +
+                                             (col * circuit_num_rows) - 1),
+                            col);
                 break;
             case 1:  // change input 2
-                circuit_matrix_[row][col].input2 = Random::get(
-                    0, circuit_num_inputs + (col * circuit_num_rows) - 1);
+                circuit_matrix_[row][col].input2 =
+                  setLback1(Random::get(0, circuit_num_inputs +
+                                             (col * circuit_num_rows) - 1),
+                            col);
                 break;
             case 2:  // change function
                 circuit_matrix_[row][col].function =
-                    Random::get(0, circuit_num_functions - 1);
+                  Random::get(0, circuit_num_functions - 1);
                 break;
         }
     }
@@ -247,4 +266,15 @@ bool CGPCircuit::loadFromFile(std::string_view path_view)
     in_file >> output_unit_;
     output_unit_ -= 25;
     return true;
+}
+
+bool switchToLessPower()
+{
+    // const int first_column = 0;
+    // if (indexToColumn(output_unit_) > first_column)
+    // {
+    //     return true;
+    // }
+    // else
+    return false;
 }
