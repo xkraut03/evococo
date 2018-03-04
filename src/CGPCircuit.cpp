@@ -38,12 +38,9 @@ int CGPCircuit::indexToRow(const int index) const
 
 int CGPCircuit::setLback1(int target, int curr_column)
 {
-    if (target >= circuit_num_inputs)
-    {
-        int column_diff =
-          curr_column - indexToColumn(target - circuit_num_inputs);
-        if (column_diff > 1) return target + ((column_diff - 1) * column_size);
-    }
+    int column_diff = curr_column - indexToColumn(target);
+    if (column_diff > 1)
+        return target + ((column_diff - 1) * column_size);
     return target;
 }
 
@@ -52,19 +49,19 @@ void CGPCircuit::initRandomly()
     using Random = effolkronium::random_static;
     for (auto& row : circuit_matrix_)
     {
-        int column_offset = 0;
+        int curr_column = 0;
         for (auto& unit : row)
         {
-            int random_target = Random::get(
-              0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
-            unit.input1 = setLback1(random_target, column_offset);
+            unit.input1 = Random::get(-circuit_num_inputs, column_size * curr_column - 1);
+            if (unit.input1 >= 0)
+                unit.input1 = setLback1(unit.input1, curr_column);
 
-            random_target = Random::get(
-              0, circuit_num_inputs + (column_offset * circuit_num_rows) - 1);
-            unit.input2 = setLback1(random_target, column_offset);
+            unit.input2 = Random::get(-circuit_num_inputs, column_size * curr_column - 1);
+            if (unit.input2 >= 0)
+                unit.input2 = setLback1(unit.input2, curr_column);
 
             unit.function = Random::get(0, circuit_num_functions - 1);
-            ++column_offset;
+            ++curr_column;
         }
     }
 
@@ -88,19 +85,17 @@ void CGPCircuit::mutateRandomly()
         int action = Random::get({ 1, 2, 3 });
         switch (action)
         {
-            case 0:  // change input 1
-                circuit_matrix_[row][col].input1 =
-                  setLback1(Random::get(0, circuit_num_inputs +
-                                             (col * circuit_num_rows) - 1),
-                            col);
+            case 1:  // change input 1
+                circuit_matrix_[row][col].input1 = Random::get(-circuit_num_inputs, (col * column_size) - 1);
+                if (circuit_matrix_[row][col].input1 >= 0)
+                    circuit_matrix_[row][col].input1 = setLback1(circuit_matrix_[row][col].input1, col);
                 break;
-            case 1:  // change input 2
-                circuit_matrix_[row][col].input2 =
-                  setLback1(Random::get(0, circuit_num_inputs +
-                                             (col * circuit_num_rows) - 1),
-                            col);
+            case 2:  // change input 2
+                circuit_matrix_[row][col].input2 = Random::get(-circuit_num_inputs, (col * column_size) - 1);
+                if (circuit_matrix_[row][col].input2 >= 0)
+                    circuit_matrix_[row][col].input2 = setLback1(circuit_matrix_[row][col].input2, col);
                 break;
-            case 2:  // change function
+            case 3:  // change function
                 circuit_matrix_[row][col].function =
                   Random::get(0, circuit_num_functions - 1);
                 break;
@@ -123,25 +118,25 @@ uint8_t CGPCircuit::getOutput()
 uint8_t CGPCircuit::getComponentOutput(const CGPComponent& unit) const
 {
     uint8_t x, y;
-    if (unit.input1 < circuit_num_inputs)
+    if (unit.input1 < 0)
     {
-        x = input_.at(unit.input1);
+        x = input_.at((-unit.input1) - 1);
     }
     else
     {
-        const int row = indexToRow(unit.input1 - circuit_num_inputs);
-        const int col = indexToColumn(unit.input1 - circuit_num_inputs);
+        const int row = indexToRow(unit.input1);
+        const int col = indexToColumn(unit.input1);
         x = getComponentOutput(circuit_matrix_.at(row).at(col));
     }
 
-    if (unit.input2 < circuit_num_inputs)
+    if (unit.input2 < 0)
     {
-        y = input_.at(unit.input2);
+        y = input_.at((-unit.input2) - 1);
     }
     else
     {
-        const int row = indexToRow(unit.input2 - circuit_num_inputs);
-        const int col = indexToColumn(unit.input2 - circuit_num_inputs);
+        const int row = indexToRow(unit.input2);
+        const int col = indexToColumn(unit.input2);
         y = getComponentOutput(circuit_matrix_.at(row).at(col));
     }
 
@@ -224,18 +219,20 @@ bool CGPCircuit::saveToFile(std::string_view path_view) const
 
 void CGPCircuit::printBackwards() const
 {
-    if (output_unit_ < 25)
+    if (output_unit_ < 0)
+    {
+        std::cout << "circuit is too short!\n";
         return;
+    }
     else
         printBackwards(output_unit_);
 }
 
 void CGPCircuit::printBackwards(int unit_index) const
 {
-    if (unit_index < 25)
+    if (unit_index < 0)
         return;
-    else
-        unit_index -= 25;
+
     int row = indexToRow(unit_index);
     int col = indexToColumn(unit_index);
     std::cout << circuit_matrix_[row][col].input1 << ' '
@@ -264,7 +261,7 @@ bool CGPCircuit::loadFromFile(std::string_view path_view)
     }
 
     in_file >> output_unit_;
-    output_unit_ -= 25;
+    // output_unit_ -= 25;
     return true;
 }
 
