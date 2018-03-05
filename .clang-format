@@ -65,7 +65,7 @@ IncludeCategories:
 # IncludeIsMainRegex: '([-_](test|unittest))?$'
 
 IndentCaseLabels: true
-IndentWidth: 2
+IndentWidth: 4
 IndentWrappedFunctionNames: false
 KeepEmptyLinesAtTheStartOfBlocks: false
 
