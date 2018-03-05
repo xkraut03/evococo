@@ -18,6 +18,9 @@
 //
 
 #include <iostream>
+#include <string>
+
+#include "../lib/effolkronium/random.hpp"
 
 #include "ComponentEvolver.hpp"
 
@@ -28,13 +31,15 @@ int main(int argc, char const *argv[])
         std::cerr << "Too few arguments\n";
         return -1;
     }
-    std::cout << "Let's evolve something!" << '\n';
+    using Random = effolkronium::random_static;
+    int evo_number = Random::get(0, 999999);
+    std::cout << evo_number << " - Let's evolve something!\n";
 
     ComponentEvolver median_filter_evolver;
     median_filter_evolver.addImages(argv[1], argv[2]);
     median_filter_evolver.evolve();
     median_filter_evolver.filterOriginalImageToFile(
-        "../build/barbara_cleared.bmp");
+      "../build/barbara_cleared" + std::to_string(evo_number) + ".bmp");
 
     return 0;
 }
