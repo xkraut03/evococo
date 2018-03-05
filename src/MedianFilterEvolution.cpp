@@ -27,7 +27,7 @@
 #include "Image.hpp"
 
 MedianFilterEvolution::MedianFilterEvolution(
-    std::string_view original_image_path, std::string_view noise_image_path)
+  std::string_view original_image_path, std::string_view noise_image_path)
     : original_image_{ original_image_path }
     , noise_image_{ noise_image_path }
     , output_image_{ original_image_path }
@@ -50,7 +50,7 @@ void MedianFilterEvolution::evolve()
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
     best_unit.printBackwards();
-    best_unit_.saveToFile("circuit.cgp");
+    if (getFitness(best_unit) >= 28.0) best_unit_.saveToFile("circuit.cgp");
 }
 
 MedianFilterEvolution::Population
@@ -63,7 +63,7 @@ MedianFilterEvolution::generateRandomPopulation()
 }
 
 MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(
-    Population& population)
+  Population& population)
 {
     double best_fitness = 0.0;
     int best_index = 0;
@@ -75,7 +75,7 @@ MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(
             best_index = i;
         }
     }
-
+    
     return population[best_index];
 }
 
