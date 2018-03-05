@@ -39,8 +39,7 @@ int CGPCircuit::indexToRow(const int index) const
 int CGPCircuit::setLback1(int target, int curr_column)
 {
     int column_diff = curr_column - indexToColumn(target);
-    if (column_diff > 1)
-        return target + ((column_diff - 1) * column_size);
+    if (column_diff > 1) return target + ((column_diff - 1) * column_size);
     return target;
 }
 
@@ -52,11 +51,13 @@ void CGPCircuit::initRandomly()
         int curr_column = 0;
         for (auto& unit : row)
         {
-            unit.input1 = Random::get(-circuit_num_inputs, column_size * curr_column - 1);
+            unit.input1 =
+              Random::get(-circuit_num_inputs, column_size * curr_column - 1);
             if (unit.input1 >= 0)
                 unit.input1 = setLback1(unit.input1, curr_column);
 
-            unit.input2 = Random::get(-circuit_num_inputs, column_size * curr_column - 1);
+            unit.input2 =
+              Random::get(-circuit_num_inputs, column_size * curr_column - 1);
             if (unit.input2 >= 0)
                 unit.input2 = setLback1(unit.input2, curr_column);
 
@@ -86,14 +87,18 @@ void CGPCircuit::mutateRandomly()
         switch (action)
         {
             case 1:  // change input 1
-                circuit_matrix_[row][col].input1 = Random::get(-circuit_num_inputs, (col * column_size) - 1);
+                circuit_matrix_[row][col].input1 =
+                  Random::get(-circuit_num_inputs, (col * column_size) - 1);
                 if (circuit_matrix_[row][col].input1 >= 0)
-                    circuit_matrix_[row][col].input1 = setLback1(circuit_matrix_[row][col].input1, col);
+                    circuit_matrix_[row][col].input1 =
+                      setLback1(circuit_matrix_[row][col].input1, col);
                 break;
             case 2:  // change input 2
-                circuit_matrix_[row][col].input2 = Random::get(-circuit_num_inputs, (col * column_size) - 1);
+                circuit_matrix_[row][col].input2 =
+                  Random::get(-circuit_num_inputs, (col * column_size) - 1);
                 if (circuit_matrix_[row][col].input2 >= 0)
-                    circuit_matrix_[row][col].input2 = setLback1(circuit_matrix_[row][col].input2, col);
+                    circuit_matrix_[row][col].input2 =
+                      setLback1(circuit_matrix_[row][col].input2, col);
                 break;
             case 3:  // change function
                 circuit_matrix_[row][col].function =
@@ -230,8 +235,7 @@ void CGPCircuit::printBackwards() const
 
 void CGPCircuit::printBackwards(int unit_index) const
 {
-    if (unit_index < 0)
-        return;
+    if (unit_index < 0) return;
 
     int row = indexToRow(unit_index);
     int col = indexToColumn(unit_index);
