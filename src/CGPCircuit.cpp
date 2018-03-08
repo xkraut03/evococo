@@ -290,3 +290,8 @@ bool CGPCircuit::switchToLessPower()
 
     return true;
 }
+
+int CGPCircuit::getCircuitLength() const
+{
+    return indexToColumn(output_unit_) + 1;
+}

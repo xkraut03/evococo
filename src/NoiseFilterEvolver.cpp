@@ -49,10 +49,13 @@ void NoiseFilterEvolver::evolve()
 
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
-    while (best_unit.switchToLessPower())
+    if (best_unit.getCircuitLength() < 2)
+        std::cout
+          << "Best circuit is too short to optimize for energy consumption\n";
+    else
     {
-        std::cout << "delam while" << std::endl;
-        std::cout << "less power = " << getFitness(best_unit) << '\n';
+        while (best_unit.switchToLessPower())
+            std::cout << "Less power PSNR = " << getFitness(best_unit) << '\n';
     }
 
     if (getFitness(best_unit) >= 28.0) best_unit_.saveToFile("circuit.cgp");

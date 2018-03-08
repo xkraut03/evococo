@@ -60,6 +60,7 @@ public:
     bool loadFromFile(std::string_view);
     void printBackwards() const;
     bool switchToLessPower();
+    int getCircuitLength() const;
 
 private:
     int column_size = circuit_num_rows;
