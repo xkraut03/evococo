@@ -20,6 +20,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
 // CGP parameters
 const int circuit_num_rows = 5;
@@ -42,10 +43,12 @@ class CGPCircuit
 private:
     template<const size_t MatrixRows, const size_t MatrixColumns>
     using ComponentsMatrix =
-        std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
+      std::array<std::array<CGPComponent, MatrixColumns>, MatrixRows>;
     ComponentsMatrix<circuit_num_rows, circuit_num_columns> circuit_matrix_;
     int output_unit_;
+    int tmp_output_;
     std::array<uint8_t, circuit_num_inputs> input_;
+    std::vector<int> out_candidates;
 
 public:
     using CGPInputArray = std::array<uint8_t, circuit_num_inputs>;
@@ -56,6 +59,7 @@ public:
     bool saveToFile(std::string_view) const;
     bool loadFromFile(std::string_view);
     void printBackwards() const;
+    bool switchToLessPower();
 
 private:
     int column_size = circuit_num_rows;

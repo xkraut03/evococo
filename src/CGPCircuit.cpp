@@ -67,6 +67,7 @@ void CGPCircuit::initRandomly()
     }
 
     output_unit_ = Random::get(0, circuit_num_rows * circuit_num_columns - 1);
+    tmp_output_ = -1;
 }
 
 void CGPCircuit::mutateRandomly()
@@ -265,17 +266,27 @@ bool CGPCircuit::loadFromFile(std::string_view path_view)
     }
 
     in_file >> output_unit_;
-    // output_unit_ -= 25;
     return true;
 }
 
-bool switchToLessPower()
+bool CGPCircuit::switchToLessPower()
 {
-    // const int first_column = 0;
-    // if (indexToColumn(output_unit_) > first_column)
-    // {
-    //     return true;
-    // }
-    // else
-    return false;
+    if (out_candidates.size() == 0)
+    {
+        if (tmp_output_ >= 0) return false;
+
+        int out_row = indexToRow(output_unit_);
+        int out_col = indexToColumn(output_unit_);
+        CGPComponent& out_unit = circuit_matrix_[out_row][out_col];
+
+        if (out_unit.input1 >= 0) out_candidates.push_back(out_unit.input1);
+        if (out_unit.input2 >= 0)
+            if (out_unit.input2 != out_unit.input1)
+                out_candidates.push_back(out_unit.input2);
+    }
+    tmp_output_ = output_unit_;
+    output_unit_ = out_candidates.back();
+    out_candidates.pop_back();
+
+    return true;
 }
