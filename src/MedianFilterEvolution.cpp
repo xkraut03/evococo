@@ -1,4 +1,4 @@
-// MedianFilterEvolution.cpp
+// NoiseFilterEvolver.cpp
 // author: Daniel Kraut
 // creation date: 7th of September, 2017
 //
@@ -17,7 +17,7 @@
 // limitations under the License.
 //
 
-#include "MedianFilterEvolution.hpp"
+#include "NoiseFilterEvolver.hpp"
 
 #include <cassert>
 #include <limits>
@@ -26,14 +26,14 @@
 #include "CGPCircuit.hpp"
 #include "Image.hpp"
 
-MedianFilterEvolution::MedianFilterEvolution(
-  std::string_view original_image_path, std::string_view noise_image_path)
+NoiseFilterEvolver::NoiseFilterEvolver(std::string_view original_image_path,
+                                       std::string_view noise_image_path)
     : original_image_{ original_image_path }
     , noise_image_{ noise_image_path }
     , output_image_{ original_image_path }
 {}
 
-void MedianFilterEvolution::evolve()
+void NoiseFilterEvolver::evolve()
 {
     Population population = generateRandomPopulation();
     Individual best_unit = selectBestUnit(population);
@@ -49,12 +49,16 @@ void MedianFilterEvolution::evolve()
 
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
-    best_unit.printBackwards();
+    while (best_unit.switchToLessPower())
+    {
+        std::cout << "delam while" << std::endl;
+        std::cout << "less power = " << getFitness(best_unit) << '\n';
+    }
+
     if (getFitness(best_unit) >= 28.0) best_unit_.saveToFile("circuit.cgp");
 }
 
-MedianFilterEvolution::Population
-MedianFilterEvolution::generateRandomPopulation()
+NoiseFilterEvolver::Population NoiseFilterEvolver::generateRandomPopulation()
 {
     Population population;
     for (auto& p : population) p.initRandomly();
@@ -62,7 +66,7 @@ MedianFilterEvolution::generateRandomPopulation()
     return population;
 }
 
-MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(
+NoiseFilterEvolver::Individual NoiseFilterEvolver::selectBestUnit(
   Population& population)
 {
     double best_fitness = 0.0;
@@ -75,12 +79,12 @@ MedianFilterEvolution::Individual MedianFilterEvolution::selectBestUnit(
             best_index = i;
         }
     }
-    
+
     return population[best_index];
 }
 
-void MedianFilterEvolution::mutatePopulationFromParent(Population& population,
-                                                       Individual parent)
+void NoiseFilterEvolver::mutatePopulationFromParent(Population& population,
+                                                    Individual parent)
 {
     population[0] = parent;
     bool skip_first = true;
@@ -115,7 +119,7 @@ void copy(Image::Window& from, CGPCircuit::CGPInputArray& to)
     std::copy(from[4].begin(), from[4].end(), to.begin() + 20);
 }
 
-double MedianFilterEvolution::getFitness(Individual& unit)
+double NoiseFilterEvolver::getFitness(Individual& unit)
 {
     noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();
@@ -135,7 +139,7 @@ double MedianFilterEvolution::getFitness(Individual& unit)
                 original_image_.getHeight());
 }
 
-long MedianFilterEvolution::oldFitness(Individual& unit)
+long NoiseFilterEvolver::oldFitness(Individual& unit)
 {
     noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();
@@ -155,7 +159,7 @@ long MedianFilterEvolution::oldFitness(Individual& unit)
     return fitness;
 }
 
-void MedianFilterEvolution::createFilteredImage(std::string_view output_path)
+void NoiseFilterEvolver::createFilteredImage(std::string_view output_path)
 {
     noise_image_.resetWindow();
     Image::Window win = noise_image_.getNextWindow();

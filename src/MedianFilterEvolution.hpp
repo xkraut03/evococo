@@ -1,4 +1,4 @@
-// MedianFilterEvolution.hpp
+// NoiseFilterEvolver.hpp
 // author: Daniel Kraut
 // creation date: 7th of September, 2017
 //
@@ -28,11 +28,11 @@
 const int population_size = 40;
 const int num_generations = 200;
 
-class MedianFilterEvolution
+class NoiseFilterEvolver
 {
 public:
-    MedianFilterEvolution(std::string_view original_image_path,
-                          std::string_view noise_image_path);
+    NoiseFilterEvolver(std::string_view original_image_path,
+                       std::string_view noise_image_path);
     void evolve();
     void createFilteredImage(std::string_view output_path);
 

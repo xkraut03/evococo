@@ -36,5 +36,5 @@ public:
 private:
     std::string original_image_path_;
     std::string noise_image_path_;
-    std::unique_ptr<MedianFilterEvolution> median_filter_evolver_;
+    std::unique_ptr<NoiseFilterEvolver> noise_filter_evolver_;
 };
