@@ -40,5 +40,5 @@ void ComponentEvolver::evolve() { noise_filter_evolver_->evolve(); }
 void ComponentEvolver::filterOriginalImageToFile(
     std::string_view output_image_path)
 {
-    median_filter_evolver_->createFilteredImage(output_image_path);
+    noise_filter_evolver_->createFilteredImage(output_image_path);
 }

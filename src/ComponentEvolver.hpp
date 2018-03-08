@@ -23,7 +23,7 @@
 #include <string>
 #include <string_view>
 
-#include "MedianFilterEvolution.hpp"
+#include "NoiseFilterEvolver.hpp"
 
 class ComponentEvolver
 {
