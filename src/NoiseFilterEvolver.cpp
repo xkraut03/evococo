@@ -50,8 +50,8 @@ void NoiseFilterEvolver::evolve()
     best_unit_ = best_unit;
     std::cout << "The best solution is: " << getFitness(best_unit) << "\n";
     if (best_unit.getCircuitLength() < 2)
-        std::cout
-          << "Best circuit is too short to optimize for energy consumption\n";
+        std::cout << "Best circuit is too short to optimize for energy "
+                     "consumption\n";
     else
     {
         while (best_unit.switchToLessPower())
