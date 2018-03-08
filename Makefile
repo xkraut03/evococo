@@ -9,7 +9,7 @@ LIBS_FOLDER = lib
 LD = clang++
 LDFLAGS = -g # /usr/lib64/libprofiler.so.0.4.16
 
-OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o MedianFilterEvolution.o CGPCircuit.o Image.o
+OBJS = main.o lib/libEasyBMP.a ComponentEvolver.o NoiseFilterEvolver.o CGPCircuit.o Image.o
 
 all: $(OBJS)
 	$(LD) $(OBJS) $(LDFLAGS) -o $(BUILD_FOLDER)/$(PROJECT_NAME)
@@ -24,13 +24,13 @@ main.o: $(SOURCE_FOLDER)/main.cpp \
 
 ComponentEvolver.o: $(SOURCE_FOLDER)/ComponentEvolver.cpp \
 	 $(SOURCE_FOLDER)/ComponentEvolver.hpp \
-	 $(SOURCE_FOLDER)/MedianFilterEvolution.hpp
+	 $(SOURCE_FOLDER)/NoiseFilterEvolver.hpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/ComponentEvolver.cpp -o ComponentEvolver.o
 
-MedianFilterEvolution.o: $(SOURCE_FOLDER)/MedianFilterEvolution.cpp \
-	 $(SOURCE_FOLDER)/MedianFilterEvolution.hpp \
+NoiseFilterEvolver.o: $(SOURCE_FOLDER)/NoiseFilterEvolver.cpp \
+	 $(SOURCE_FOLDER)/NoiseFilterEvolver.hpp \
 	 $(SOURCE_FOLDER)/CGPCircuit.hpp
-	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/MedianFilterEvolution.cpp -o MedianFilterEvolution.o
+	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/NoiseFilterEvolver.cpp -o NoiseFilterEvolver.o
 
 CGPCircuit.o: $(SOURCE_FOLDER)/CGPCircuit.cpp $(SOURCE_FOLDER)/CGPCircuit.hpp
 	$(CXX) $(CXXFLAGS) $(SOURCE_FOLDER)/CGPCircuit.cpp -o CGPCircuit.o
